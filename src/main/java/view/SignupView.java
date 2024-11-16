@@ -4,8 +4,6 @@ import Use_case.UserManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SignupView {
     private final UserManager userManager;
@@ -42,6 +40,7 @@ public class SignupView {
 
         frame.add(panel, BorderLayout.CENTER);
 
+        // Create Account Button ActionListener
         createAccountButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
@@ -54,13 +53,14 @@ public class SignupView {
             } else {
                 userManager.addUser(username, password);
                 JOptionPane.showMessageDialog(frame, "Account created successfully!");
-                frame.dispose();
+                frame.dispose(); // Close the sign-up window
                 new LoginView(userManager); // Return to LoginView
             }
         });
 
+        // Back Button ActionListener
         backButton.addActionListener(e -> {
-            frame.dispose();
+            frame.dispose(); // Close the sign-up window
             new LoginView(userManager); // Return to LoginView
         });
 

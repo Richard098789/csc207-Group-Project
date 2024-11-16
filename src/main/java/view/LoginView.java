@@ -7,12 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginView {
+    private final UserManager userManager; // Shared UserManager instance
+
     public LoginView(UserManager userManager) {
+        this.userManager = userManager; // Shared instance
         LoginController controller = new LoginController(userManager);
-        createAndShowGUI(controller, userManager);
+        createAndShowGUI(controller);
     }
 
-    private void createAndShowGUI(LoginController controller, UserManager userManager) {
+    private void createAndShowGUI(LoginController controller) {
         JFrame frame = new JFrame("Login Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
@@ -35,25 +38,30 @@ public class LoginView {
 
         frame.add(panel, BorderLayout.CENTER);
 
+        // Login Button ActionListener
         loginButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
             if (controller.login(username, password)) {
                 JOptionPane.showMessageDialog(frame, "Login successful!");
+                frame.dispose(); // Close login window
+                new MainMenuView(userManager); // Pass shared UserManager instance to MainMenuView
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
+        // Sign-Up Button ActionListener
         signupButton.addActionListener(e -> {
-            frame.dispose();
-            new SignupView(userManager); // Pass the instance of UserManager
+            frame.dispose(); // Close login window
+            new SignupView(userManager); // Pass shared UserManager instance to SignupView
         });
 
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        new LoginView(new UserManager());
+        UserManager userManager = new UserManager(); // Shared instance
+        new LoginView(userManager);
     }
 }

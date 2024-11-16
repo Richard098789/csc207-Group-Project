@@ -1,26 +1,25 @@
 package view;
 
+import Controller.LoginController;
+import Use_case.UserManager;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginView {
-    public LoginView() {
-        createAndShowGUI();
+    public LoginView(UserManager userManager) {
+        LoginController controller = new LoginController(userManager);
+        createAndShowGUI(controller, userManager);
     }
 
-    private void createAndShowGUI() {
-        // Create the main frame
+    private void createAndShowGUI(LoginController controller, UserManager userManager) {
         JFrame frame = new JFrame("Login Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
 
-        // Create a panel for the form
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2, 10, 10)); // 3 rows, 2 columns
+        panel.setLayout(new GridLayout(3, 2, 10, 10));
 
-        // Add components to the panel
         panel.add(new JLabel("Username:"));
         JTextField usernameField = new JTextField();
         panel.add(usernameField);
@@ -29,40 +28,32 @@ public class LoginView {
         JPasswordField passwordField = new JPasswordField();
         panel.add(passwordField);
 
-        // Buttons
         JButton loginButton = new JButton("Login");
         JButton signupButton = new JButton("Sign Up");
         panel.add(loginButton);
         panel.add(signupButton);
 
-        // Add panel to the frame
         frame.add(panel, BorderLayout.CENTER);
 
-        // Button Actions
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-
-                // Add logic for validating login here
-                JOptionPane.showMessageDialog(frame, "Login attempted with Username: " + username);
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            if (controller.login(username, password)) {
+                JOptionPane.showMessageDialog(frame, "Login successful!");
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        signupButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the login window
-                new SignupView(); // Open the sign-up window
-            }
+        signupButton.addActionListener(e -> {
+            frame.dispose();
+            new SignupView(userManager); // Pass the instance of UserManager
         });
 
-        // Make the frame visible
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        new LoginView();
+        new LoginView(new UserManager());
     }
 }

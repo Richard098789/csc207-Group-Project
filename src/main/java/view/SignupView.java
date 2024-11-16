@@ -1,26 +1,28 @@
 package view;
 
+import Use_case.UserManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SignupView {
-    public SignupView() {
+    private final UserManager userManager;
+
+    public SignupView(UserManager userManager) {
+        this.userManager = userManager;
         createAndShowGUI();
     }
 
     private void createAndShowGUI() {
-        // Create the main frame
         JFrame frame = new JFrame("Sign-Up Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
 
-        // Create a panel for the form
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 2, 10, 10)); // 4 rows, 2 columns
+        panel.setLayout(new GridLayout(4, 2, 10, 10));
 
-        // Add components to the panel
         panel.add(new JLabel("Username:"));
         JTextField usernameField = new JTextField();
         panel.add(usernameField);
@@ -33,45 +35,35 @@ public class SignupView {
         JPasswordField confirmPasswordField = new JPasswordField();
         panel.add(confirmPasswordField);
 
-        // Buttons
         JButton createAccountButton = new JButton("Create Account");
         JButton backButton = new JButton("Back to Login");
         panel.add(createAccountButton);
         panel.add(backButton);
 
-        // Add panel to the frame
         frame.add(panel, BorderLayout.CENTER);
 
-        // Button Actions
-        createAccountButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-                String confirmPassword = new String(confirmPasswordField.getPassword());
+        createAccountButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
 
-                if (!password.equals(confirmPassword)) {
-                    JOptionPane.showMessageDialog(frame, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    // Add logic for account creation here
-                    JOptionPane.showMessageDialog(frame, "Account created for Username: " + username);
-                }
+            if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(frame, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (userManager.userExists(username)) {
+                JOptionPane.showMessageDialog(frame, "Username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                userManager.addUser(username, password);
+                JOptionPane.showMessageDialog(frame, "Account created successfully!");
+                frame.dispose();
+                new LoginView(userManager); // Return to LoginView
             }
         });
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the sign-up window
-                new LoginView(); // Open the login window
-            }
+        backButton.addActionListener(e -> {
+            frame.dispose();
+            new LoginView(userManager); // Return to LoginView
         });
 
-        // Make the frame visible
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new SignupView();
     }
 }

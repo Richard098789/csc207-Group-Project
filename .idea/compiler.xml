@@ -7,6 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="grade-api" />
+<<<<<<< HEAD
+=======
+        <module name="homework-5" />
+>>>>>>> origin/Chris
       </profile>
     </annotationProcessing>
   </component>

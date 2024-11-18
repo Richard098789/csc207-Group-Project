@@ -15,7 +15,7 @@ public class PaginatedListings {
     private final int LIMIT = 10; // Number of results per request
 
     public PaginatedListings() {
-        frame = new JFrame("Music Listings");
+        frame = new JFrame("Paginated Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 800);
         frame.setLayout(new BorderLayout());
@@ -27,7 +27,7 @@ public class PaginatedListings {
         // Main panel to hold all listings
         listingPanel = new JPanel();
         listingPanel.setLayout(new BoxLayout(listingPanel, BoxLayout.Y_AXIS));
-        listingPanel.setBackground(Color.WHITE); // Set background for a clean UI
+        listingPanel.setBackground(Color.WHITE);
 
         // Scroll pane for the listing panel
         JScrollPane scrollPane = new JScrollPane(listingPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -37,7 +37,7 @@ public class PaginatedListings {
         // "Load More" button
         loadMoreButton = new JButton("Load More");
         loadMoreButton.setFont(new Font("Arial", Font.BOLD, 16));
-        loadMoreButton.setBackground(new Color(173, 216, 230)); // Light blue color
+        loadMoreButton.setBackground(new Color(173, 216, 230));
         loadMoreButton.setForeground(Color.BLACK);
         loadMoreButton.addActionListener(new LoadMoreListener());
         frame.add(loadMoreButton, BorderLayout.SOUTH);
@@ -53,7 +53,7 @@ public class PaginatedListings {
 
         try {
             // Fetch artist data with pagination
-            Artist[] artists = api.getArtistsPaginated("Beatles", LIMIT, offset);
+            Artist[] artists = api.getArtists("Beatles", "group", "GB");
 
             if (artists.length == 0 && offset == 0) {
                 JLabel noDataLabel = new JLabel("No artists found!");
@@ -62,8 +62,7 @@ public class PaginatedListings {
             } else {
                 // Display each artist in a custom panel
                 for (Artist artist : artists) {
-                    JPanel artistPanel = createArtistPanel(artist);
-                    listingPanel.add(artistPanel);
+                    listingPanel.add(createArtistPanel(artist));
                 }
                 offset += LIMIT; // Update the offset for the next batch
             }
@@ -87,31 +86,17 @@ public class PaginatedListings {
         JPanel artistPanel = new JPanel();
         artistPanel.setLayout(new BorderLayout());
         artistPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-        artistPanel.setMaximumSize(new Dimension(550, 100)); // Set a fixed size for consistent layout
-        artistPanel.setBackground(new Color(240, 248, 255)); // Light blue background for the artist panel
+        artistPanel.setMaximumSize(new Dimension(550, 100));
+        artistPanel.setBackground(new Color(240, 248, 255));
 
-        // Artist name label
         JLabel nameLabel = new JLabel("<html><b>Artist:</b> " + artist.getArtistName() + "</html>");
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         artistPanel.add(nameLabel, BorderLayout.WEST);
 
-        // Country label
-        JLabel countryLabel = new JLabel("<html><b>Country:</b> " + artist.getCountry() + "</html>");
-        countryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        countryLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        artistPanel.add(countryLabel, BorderLayout.CENTER);
-
-        // Rate label (placeholder)
-        JLabel rateLabel = new JLabel("<html><b>Rate:</b> X/10</html>", JLabel.RIGHT);
-        rateLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        rateLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        artistPanel.add(rateLabel, BorderLayout.EAST);
-
         return artistPanel;
     }
 
-    // Listener for the "Load More" button
     private class LoadMoreListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

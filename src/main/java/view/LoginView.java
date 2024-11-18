@@ -2,12 +2,11 @@ package view;
 
 import Controller.LoginController;
 import Use_case.UserManager;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView {
-    private final UserManager userManager; // Shared UserManager instance
+    private final UserManager userManager;
 
     public LoginView(UserManager userManager) {
         this.userManager = userManager; // Shared instance

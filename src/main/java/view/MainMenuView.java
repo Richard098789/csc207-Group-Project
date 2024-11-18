@@ -1,49 +1,51 @@
 package view;
 
 import Use_case.UserManager;
-
 import javax.swing.*;
 import java.awt.*;
+import UI.EnhancedListing; // Assuming EnhancedListing is your artist listing page class
 
 public class MainMenuView {
     private final UserManager userManager;
 
     public MainMenuView(UserManager userManager) {
-        this.userManager = userManager; // Pass shared UserManager instance
+        this.userManager = userManager; // Shared UserManager instance
         createAndShowGUI();
     }
 
     private void createAndShowGUI() {
         JFrame frame = new JFrame("Main Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        frame.setSize(400, 300);
 
-        JLabel titleLabel = new JLabel("Our Program", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        frame.add(titleLabel, BorderLayout.NORTH);
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 1, 10, 10));
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(3, 1, 10, 10)); // 3 rows, 1 column
-
-        JButton musicListingsButton = new JButton("Music Listings");
-        JButton myAccountButton = new JButton("My Account");
+        JButton listingsButton = new JButton("View Artist Listings");
+        JButton accountButton = new JButton("My Account");
         JButton logoutButton = new JButton("Log Out");
 
-        buttonPanel.add(musicListingsButton);
-        buttonPanel.add(myAccountButton);
-        buttonPanel.add(logoutButton);
+        panel.add(listingsButton);
+        panel.add(accountButton);
+        panel.add(logoutButton);
 
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50)); // Add padding
-        frame.add(buttonPanel, BorderLayout.CENTER);
+        frame.add(panel, BorderLayout.CENTER);
 
-        // Action Listeners for buttons
-        musicListingsButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Music Listings clicked!"));
-        myAccountButton.addActionListener(e -> JOptionPane.showMessageDialog(frame, "My Account clicked!"));
+        // ActionListener for "View Artist Listings" button
+        listingsButton.addActionListener(e -> {
+            frame.dispose(); // Close main menu window
+            new EnhancedListing(); // Navigate to the artist listing page
+        });
 
-        // Logout Button
+        // ActionListener for "My Account" button
+        accountButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Account management is under construction!");
+        });
+
+        // ActionListener for "Log Out" button
         logoutButton.addActionListener(e -> {
-            frame.dispose(); // Close the Main Menu
-            new LoginView(userManager); // Pass the shared UserManager instance back to LoginView
+            frame.dispose(); // Close main menu window
+            new LoginView(userManager); // Navigate back to login page
         });
 
         frame.setVisible(true);

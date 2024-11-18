@@ -12,7 +12,7 @@ public class EnhancedListing {
     private JPanel listingPanel;
     private JScrollPane scrollPane;
     private JButton loadMoreButton;
-    private int offset = 0; // Start point for the API request
+    private int offset = 0; // Start offset for the API request
     private final int LIMIT = 10; // Number of results per request
     private boolean hasMore = true; // Flag to indicate if there are more results
 
@@ -53,7 +53,7 @@ public class EnhancedListing {
 
         try {
             // Fetch paginated artist data
-            Artist[] artists = api.getArtistsPaginated("Beatles", LIMIT, offset);
+            Artist[] artists = api.getArtists("Beatles", "group", "GB");
 
             if (artists.length == 0 && offset == 0) {
                 JLabel noDataLabel = new JLabel("No artists found!");
@@ -100,11 +100,11 @@ public class EnhancedListing {
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         artistPanel.add(nameLabel, BorderLayout.WEST);
 
-        // Additional info label
-        JLabel additionalInfoLabel = new JLabel("<html><b>Info:</b> " + (artist.getCountry() != null ? artist.getCountry() : "N/A") + "</html>");
-        additionalInfoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        additionalInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        artistPanel.add(additionalInfoLabel, BorderLayout.CENTER);
+        // Country label
+        JLabel countryLabel = new JLabel("<html><b>Country:</b> " + artist.getCountry() + "</html>");
+        countryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        countryLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        artistPanel.add(countryLabel, BorderLayout.CENTER);
 
         return artistPanel;
     }

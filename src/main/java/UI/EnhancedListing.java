@@ -1,5 +1,5 @@
 package UI;
-
+import view.Artist_View;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -123,7 +123,7 @@ public class EnhancedListing {
         artistPanel.setLayout(new BorderLayout());
         artistPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         artistPanel.setMaximumSize(new Dimension(750, 120));
-        artistPanel.setBackground(new Color(240, 248, 255));
+        artistPanel.setBackground(new Color(240, 248, 255)); // Light blue background for the artist panel
 
         // Artist name label
         JLabel nameLabel = new JLabel("<html><b>Artist:</b> " + artist.getArtistName() + "</html>");
@@ -138,6 +138,28 @@ public class EnhancedListing {
         additionalInfoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         additionalInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         artistPanel.add(additionalInfoLabel, BorderLayout.CENTER);
+
+        // Add MouseListener to detect clicks
+        artistPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Navigate to ArtistDetailView when clicked
+                new view.ArtistDetailView(artist); // Pass the artist object to the detail view
+                frame.dispose(); // Close the current window (optional)
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                // Highlight the panel when hovered
+                artistPanel.setBackground(new Color(200, 220, 240)); // Slightly darker blue
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                // Reset the background color when mouse exits
+                artistPanel.setBackground(new Color(240, 248, 255)); // Reset to the original color
+            }
+        });
 
         return artistPanel;
     }

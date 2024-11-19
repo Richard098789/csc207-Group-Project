@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import api.MusicBrainzAPI;
+import api.API_v2;
 import entity.Artist;
 
 public class EnhancedListing {
@@ -12,19 +12,48 @@ public class EnhancedListing {
     private JPanel listingPanel;
     private JScrollPane scrollPane;
     private JButton loadMoreButton;
-    private int offset = 0; // Start offset for the API request
+    private JTextField searchField;
+    private JTextField countryField;
+    private JComboBox<String> typeDropdown;
+    private JButton searchButton;
+    private int offset = 0; // Start point for pagination
     private final int LIMIT = 10; // Number of results per request
     private boolean hasMore = true; // Flag to indicate if there are more results
+    private String searchArtist = ""; // Search filter for artist name
+    private String searchCountry = ""; // Search filter for country
+    private String searchType = ""; // Search filter for type
 
     public EnhancedListing() {
         frame = new JFrame("Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 800);
+        frame.setSize(800, 900);
         frame.setLayout(new BorderLayout());
 
+        // Title label
         JLabel titleLabel = new JLabel("Music Listings", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         frame.add(titleLabel, BorderLayout.NORTH);
+
+        // Search bar panel
+        JPanel searchPanel = new JPanel(new FlowLayout());
+        searchField = new JTextField(15);
+        countryField = new JTextField(10);
+
+        // Dropdown for type
+        String[] types = {"Any", "Group", "Person", "Other"};
+        typeDropdown = new JComboBox<>(types);
+
+        searchButton = new JButton("Search");
+        searchButton.addActionListener(new SearchListener());
+
+        searchPanel.add(new JLabel("Artist:"));
+        searchPanel.add(searchField);
+        searchPanel.add(new JLabel("Country:"));
+        searchPanel.add(countryField);
+        searchPanel.add(new JLabel("Type:"));
+        searchPanel.add(typeDropdown); // Add dropdown to panel
+        searchPanel.add(searchButton);
+        frame.add(searchPanel, BorderLayout.NORTH);
 
         // Main panel to hold all listings
         listingPanel = new JPanel();
@@ -49,11 +78,11 @@ public class EnhancedListing {
     }
 
     private void fetchAndDisplayListings() {
-        MusicBrainzAPI api = new MusicBrainzAPI();
+        API_v2 api = new API_v2();
 
         try {
-            // Fetch paginated artist data
-            Artist[] artists = api.getArtists("Beatles", "group", "GB");
+            // Fetch paginated artist data using correct parameters
+            Artist[] artists = api.getArtists(searchArtist, searchCountry, LIMIT, offset);
 
             if (artists.length == 0 && offset == 0) {
                 JLabel noDataLabel = new JLabel("No artists found!");
@@ -62,12 +91,14 @@ public class EnhancedListing {
                 hasMore = false;
                 loadMoreButton.setEnabled(false);
             } else {
-                // Add each artist to the listing panel
+                // Display paginated results
                 for (Artist artist : artists) {
-                    listingPanel.add(createArtistPanel(artist));
+                    // Filter by type if specified
+                    if (searchType.equals("Any") || artist.getType().equalsIgnoreCase(searchType)) {
+                        listingPanel.add(createArtistPanel(artist));
+                    }
                 }
 
-                // Update the offset for the next page
                 offset += LIMIT;
 
                 // Refresh UI components
@@ -75,7 +106,7 @@ public class EnhancedListing {
                 listingPanel.repaint();
 
                 if (artists.length < LIMIT) {
-                    hasMore = false; // No more results
+                    hasMore = false;
                     loadMoreButton.setText("No More Results");
                     loadMoreButton.setEnabled(false);
                 }
@@ -91,20 +122,22 @@ public class EnhancedListing {
         JPanel artistPanel = new JPanel();
         artistPanel.setLayout(new BorderLayout());
         artistPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-        artistPanel.setMaximumSize(new Dimension(550, 100));
+        artistPanel.setMaximumSize(new Dimension(750, 120));
         artistPanel.setBackground(new Color(240, 248, 255));
 
         // Artist name label
         JLabel nameLabel = new JLabel("<html><b>Artist:</b> " + artist.getArtistName() + "</html>");
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        artistPanel.add(nameLabel, BorderLayout.WEST);
+        artistPanel.add(nameLabel, BorderLayout.NORTH);
 
-        // Country label
-        JLabel countryLabel = new JLabel("<html><b>Country:</b> " + artist.getCountry() + "</html>");
-        countryLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        countryLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        artistPanel.add(countryLabel, BorderLayout.CENTER);
+        // Additional info label
+        JLabel additionalInfoLabel = new JLabel("<html><b>Type:</b> " + artist.getType() +
+                " | <b>Country:</b> " + artist.getCountry() +
+                " | <b>Score:</b> " + artist.getScore() + "</html>");
+        additionalInfoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        additionalInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        artistPanel.add(additionalInfoLabel, BorderLayout.CENTER);
 
         return artistPanel;
     }
@@ -115,6 +148,26 @@ public class EnhancedListing {
             if (hasMore) {
                 fetchAndDisplayListings();
             }
+        }
+    }
+
+    private class SearchListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Get search criteria
+            searchArtist = searchField.getText().trim();
+            searchCountry = countryField.getText().trim();
+            searchType = (String) typeDropdown.getSelectedItem();
+
+            // Reset state for new search
+            offset = 0;
+            hasMore = true;
+            listingPanel.removeAll();
+            loadMoreButton.setText("Load More");
+            loadMoreButton.setEnabled(true);
+
+            // Fetch and display results
+            fetchAndDisplayListings();
         }
     }
 

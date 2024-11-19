@@ -1,66 +1,67 @@
-package view;
+    package view;
 
-import Controller.LoginController;
-import Use_case.UserManager;
-import javax.swing.*;
-import java.awt.*;
+    import Controller.LoginController;
+    import Use_case.UserManager;
 
-public class LoginView {
-    private final UserManager userManager;
+    import javax.swing.*;
+    import java.awt.*;
 
-    public LoginView(UserManager userManager) {
-        this.userManager = userManager; // Shared instance
-        LoginController controller = new LoginController(userManager);
-        createAndShowGUI(controller);
-    }
+    public class LoginView {
+        private final UserManager userManager; // Shared UserManager instance
 
-    private void createAndShowGUI(LoginController controller) {
-        JFrame frame = new JFrame("Login Page");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        public LoginView(UserManager userManager) {
+            this.userManager = userManager; // Shared instance
+            LoginController controller = new LoginController(userManager);
+            createAndShowGUI(controller);
+        }
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2, 10, 10));
+        private void createAndShowGUI(LoginController controller) {
+            JFrame frame = new JFrame("Login Page");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(400, 300);
 
-        panel.add(new JLabel("Username:"));
-        JTextField usernameField = new JTextField();
-        panel.add(usernameField);
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridLayout(3, 2, 10, 10));
 
-        panel.add(new JLabel("Password:"));
-        JPasswordField passwordField = new JPasswordField();
-        panel.add(passwordField);
+            panel.add(new JLabel("Username:"));
+            JTextField usernameField = new JTextField();
+            panel.add(usernameField);
 
-        JButton loginButton = new JButton("Login");
-        JButton signupButton = new JButton("Sign Up");
-        panel.add(loginButton);
-        panel.add(signupButton);
+            panel.add(new JLabel("Password:"));
+            JPasswordField passwordField = new JPasswordField();
+            panel.add(passwordField);
 
-        frame.add(panel, BorderLayout.CENTER);
+            JButton loginButton = new JButton("Login");
+            JButton signupButton = new JButton("Sign Up");
+            panel.add(loginButton);
+            panel.add(signupButton);
 
-        // Login Button ActionListener
-        loginButton.addActionListener(e -> {
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
-            if (controller.login(username, password)) {
-                JOptionPane.showMessageDialog(frame, "Login successful!");
+            frame.add(panel, BorderLayout.CENTER);
+
+            // Login Button ActionListener
+            loginButton.addActionListener(e -> {
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+                if (controller.login(username, password)) {
+                    JOptionPane.showMessageDialog(frame, "Login successful!");
+                    frame.dispose(); // Close login window
+                    new MainMenuView(userManager); // Pass shared UserManager instance to MainMenuView
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            // Sign-Up Button ActionListener
+            signupButton.addActionListener(e -> {
                 frame.dispose(); // Close login window
-                new MainMenuView(userManager); // Pass shared UserManager instance to MainMenuView
-            } else {
-                JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
+                new SignupView(userManager); // Pass shared UserManager instance to SignupView
+            });
 
-        // Sign-Up Button ActionListener
-        signupButton.addActionListener(e -> {
-            frame.dispose(); // Close login window
-            new SignupView(userManager); // Pass shared UserManager instance to SignupView
-        });
+            frame.setVisible(true);
+        }
 
-        frame.setVisible(true);
+        public static void main(String[] args) {
+            UserManager userManager = new UserManager(); // Shared instance
+            new LoginView(userManager);
+        }
     }
-
-    public static void main(String[] args) {
-        UserManager userManager = new UserManager(); // Shared instance
-        new LoginView(userManager);
-    }
-}

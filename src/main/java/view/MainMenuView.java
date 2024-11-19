@@ -1,15 +1,17 @@
 package view;
 
-import Use_case.UserManager;
 import javax.swing.*;
 import java.awt.*;
-import UI.EnhancedListing; // Assuming EnhancedListing is your artist listing page class
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import Use_case.UserManager;
+import UI.EnhancedListing; // Import the music listing UI
 
 public class MainMenuView {
     private final UserManager userManager;
 
     public MainMenuView(UserManager userManager) {
-        this.userManager = userManager; // Shared UserManager instance
+        this.userManager = userManager;
         createAndShowGUI();
     }
 
@@ -21,31 +23,32 @@ public class MainMenuView {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1, 10, 10));
 
-        JButton listingsButton = new JButton("View Artist Listings");
+        JButton musicListingsButton = new JButton("Music Listings");
         JButton accountButton = new JButton("My Account");
         JButton logoutButton = new JButton("Log Out");
 
-        panel.add(listingsButton);
+        panel.add(musicListingsButton);
         panel.add(accountButton);
         panel.add(logoutButton);
 
         frame.add(panel, BorderLayout.CENTER);
 
-        // ActionListener for "View Artist Listings" button
-        listingsButton.addActionListener(e -> {
-            frame.dispose(); // Close main menu window
-            new EnhancedListing(); // Navigate to the artist listing page
+        // Music Listings button action
+        musicListingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the main menu window
+                new EnhancedListing(); // Open the music listing window
+            }
         });
 
-        // ActionListener for "My Account" button
-        accountButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(frame, "Account management is under construction!");
-        });
-
-        // ActionListener for "Log Out" button
-        logoutButton.addActionListener(e -> {
-            frame.dispose(); // Close main menu window
-            new LoginView(userManager); // Navigate back to login page
+        // Log Out button action
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the main menu
+                new LoginView(userManager); // Go back to the login view
+            }
         });
 
         frame.setVisible(true);

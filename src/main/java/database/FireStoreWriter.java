@@ -1,11 +1,11 @@
 package database;
 
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
 
 public class FireStoreWriter {
 
@@ -25,24 +25,24 @@ public class FireStoreWriter {
         }
     }
 
-    public static void main(String[] args) {
-        Firestore db = FireStoreInitializer.initializeFirestore();
-        if (db != null) {
-            String email = "testuser@example.com";
-            String password = "password123";
+    // public static void main(String[] args) {
+    //     Firestore db = FireStoreInitializer.initializeFirestore();
+    //     if (db != null) {
+    //         String email = "testuser@example.com";
+    //         String password = "password123";
 
-            // Log in the user
-            String uid = UserLogin.loginUser(email, password);
+    //         // Log in the user
+    //         String uid = UserLogin.loginUser(email, password);
 
-            if (uid != null) {
-                // Write data to Firestore
-                FireStoreWriter.writeNewDocument(db, uid);
+    //         if (uid != null) {
+    //             // Write data to Firestore
+    //             FireStoreWriter.writeNewDocument(db, uid);
 
-                // Read data from Firestore
-                FireStoreReader.readUserData(db, uid);
-            }
-        }
-    }
+    //             // Read data from Firestore
+    //             FireStoreReader.readUserData(db, uid);
+    //         }
+    //     }
+    // }
     
 }
 

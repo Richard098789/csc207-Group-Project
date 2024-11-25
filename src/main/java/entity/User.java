@@ -3,6 +3,7 @@ package entity;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * This class represents a user of the program.
  * It contains information such as the user ID, username, password, and a list of comment IDs.
@@ -21,13 +22,16 @@ public class User {
         this.username = username;
         this.password = password;
         this.commentId = new ArrayList<>();
+
     }
 
     /**
      * Returns the user ID.
      * @return the user ID.
      */
+
     public int getUserId() {
+
         return userId;
     }
 
@@ -64,6 +68,7 @@ public class User {
     }
 
     /**
+
      * Returns the list of comment IDs.
      * @return the list of comment IDs.
      */
@@ -85,6 +90,7 @@ public class User {
      */
     public void removeComment(String commentId) {
         this.commentId.remove(commentId);
+
     }
 
 }

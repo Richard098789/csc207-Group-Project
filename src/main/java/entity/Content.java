@@ -16,7 +16,7 @@ public class Content {
     public Content(String contentId) {
         this.contentId = contentId;
         this.content = new HashMap<>();
-        this.averageRating = getRating();
+        this.averageRating = 0.0;
     }
 
     /**
@@ -58,5 +58,9 @@ public class Content {
         // Calculating average rating
         double average = rating / content.size();
         return Math.round(average * 10) / 10.0; // rounded to one decimal place.
+    }
+
+    public void setAverageRating() {
+        this.averageRating = getRating();
     }
 }

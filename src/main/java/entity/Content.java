@@ -16,7 +16,7 @@ public class Content {
     public Content(String contentId) {
         this.contentId = contentId;
         this.content = new HashMap<>();
-        this.averageRating = 0.0;
+        this.averageRating = getRating();
     }
 
     /**
@@ -49,7 +49,7 @@ public class Content {
      * number between 0.0 and 10.0.
      * @return the average rating.
      */
-    public double getRating(String userId) {
+    private double getRating() {
         double rating = 0.0;
         for (Map<String, Object> value : content.values()) {
 

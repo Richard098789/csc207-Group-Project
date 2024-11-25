@@ -34,11 +34,4 @@ public class Reader {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        Firestore db = FireStoreInitializer.initializeFirestore();
-        if (db != null) {
-            Reader.fromPublic(db, "Public", "98765432");
-        }
-    }
 }

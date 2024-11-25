@@ -112,21 +112,20 @@ public class MusicBrainzAPI {
                         .artistId(artistId)
                         .score(event.optInt("score", 0))
                         .build();
-                }
+            }
             return result;
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
     }
-    
-//    Below is a test case
+
+    //    Below is a test case
     public static void main(String[] args) {
         MusicBrainzAPI api = new MusicBrainzAPI();
         // Artist[] artists = api.getArtists("richard", "person", "US");
         // System.out.println(artists.length);
         Event[] events = api.getEvents("Jazz Fest", "festival", "new york");
-        System.out.println(events.length);
+        System.out.println(events[2].getId());
     }
 }
-
 

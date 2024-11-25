@@ -2,32 +2,36 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 /**
  * This class represents a user of the program.
- * It contains information such as the user ID, username, password, and a list of comments.
- * The username, password, and the list of comments are changeable after a User is created,
+ * It contains information such as the user ID, username, password, and a list of comment IDs.
+ * The username, password, and the list of comment IDs are changeable after an User is created,
  * but the user ID is final.
  */
 public class User {
-    private final String userId;
+    private static int idCounter = 0;
+    private final int userId;
     private String username;
     private String password;
-    private List<String> comments;
+    private List<String> commentId;
 
     public User(String username, String password) {
-        this.userId = UUID.randomUUID().toString();
+        this.userId = idCounter++;
         this.username = username;
         this.password = password;
-        this.comments = new ArrayList<>();
+        this.commentId = new ArrayList<>();
+
     }
 
     /**
      * Returns the user ID.
      * @return the user ID.
      */
-    public String getUserId() {
+
+    public int getUserId() {
+
         return userId;
     }
 
@@ -64,27 +68,29 @@ public class User {
     }
 
     /**
-     * Returns the list of comments.
-     * @return the list of comments.
+
+     * Returns the list of comment IDs.
+     * @return the list of comment IDs.
      */
-    public List<String> getComments() {
-        return comments;
+    public List<String> getCommentId() {
+        return commentId;
     }
 
     /**
-     * Adds a comment to the list of comments.
-     * @param comment the comment that the user wanted to add.
+     * Adds a comment ID to the list of comment IDs.
+     * @param commentId the comment ID that the user wanted to add.
      */
-    public void addComment(String comment) {
-        this.comments.add(comment);
+    public void addComment(String commentId) {
+        this.commentId.add(commentId);
     }
 
     /**
-     * Remove a comment from the list of comments.
-     * @param comment the comment that the user wanted to remove.
+     * Remove a comment ID from  the list of comment IDs.
+     * @param commentId the comment ID that the user wanted to remove.
      */
-    public void removeComment(String comment) {
-        this.comments.remove(comment);
+    public void removeComment(String commentId) {
+        this.commentId.remove(commentId);
+
     }
 
 }

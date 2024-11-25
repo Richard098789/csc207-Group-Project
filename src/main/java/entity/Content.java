@@ -1,6 +1,7 @@
 package entity;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents the content of an Artist, Event, or Recording.
@@ -16,7 +17,6 @@ public class Content {
     public Content(String contentId) {
         this.contentId = contentId;
         this.content = new HashMap<>();
-        this.averageRating = getRating();
     }
 
     /**
@@ -40,8 +40,12 @@ public class Content {
         this.content = content;
     }
 
-    public void setAverageRating(double averageRating) {
-        this.averageRating = averageRating;
+    public void setAverageRating() {
+        this.averageRating = getRating();
+    }
+
+    public double getAverageRating() {
+        return this.averageRating;
     }
 
     /**

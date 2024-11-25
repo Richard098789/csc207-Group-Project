@@ -6,14 +6,13 @@ import database.FireStoreInitializer;
 import entity.Content;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class Reader {
     static final String PUBLIC_COLLECTION_NAME = "Public";
 
-    public static void fromPublic(Firestore db, String collectionName, String documentId) {
+    public static Content fromPublic(Firestore db, String collectionName, String documentId) {
         try {
             DocumentSnapshot document = db.collection(collectionName).document(documentId).get().get();
             Content content = new Content(documentId);
@@ -26,12 +25,14 @@ public class Reader {
                     map.put(key, value);
                 }
                 content.setContent(map);
-            } else{
+                return content;
+            } else {
                 System.out.println("Document does not exist");
             }
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error reading document: " + e.getMessage());
         }
+        return null;
     }
 
     public static void main(String[] args) {

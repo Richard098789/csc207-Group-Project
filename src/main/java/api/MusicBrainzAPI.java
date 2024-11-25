@@ -125,7 +125,7 @@ public class MusicBrainzAPI {
         // Artist[] artists = api.getArtists("richard", "person", "US");
         // System.out.println(artists.length);
         Event[] events = api.getEvents("Jazz Fest", "festival", "new york");
-        System.out.println(events.length);
+        System.out.println(events[2].getId());
     }
 }
 

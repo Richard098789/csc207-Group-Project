@@ -1,9 +1,15 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
 
-import UI.EnhancedListing;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import entity.Artist;
 
 public class ArtistDetailView {
@@ -37,7 +43,7 @@ public class ArtistDetailView {
         backButton.setFont(new Font("Arial", Font.PLAIN, 16));
         backButton.addActionListener(e -> {
             frame.dispose(); // Close this window
-            new EnhancedListing(); // Reopen the main listing page
+            //new EnhancedListing(); // Reopen the main listing page
         });
 
         JPanel buttonPanel = new JPanel();

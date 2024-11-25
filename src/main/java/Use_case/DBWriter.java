@@ -21,7 +21,7 @@ public class DBWriter {
             data.put(UserName, content);
 
             // Write data to Firestore
-            WriteResult result = db.collection(PUBLIC_COLLECTION_NAME).document(documentId).set(data, SetOptions.merge()).get();
+            WriteResult result = db.collection(PUBLIC_COLLECTION_NAME).document(documentId).set(data, SetOptions.merge()).get(); // SetOption to merge so that it would not override previous data.
             System.out.println("Document written successfully");
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error writing document: " + e.getMessage());

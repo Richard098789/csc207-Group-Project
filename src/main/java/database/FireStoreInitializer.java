@@ -12,7 +12,7 @@ public class FireStoreInitializer {
 
     public static Firestore initializeFirestore() {
         try {
-            FileInputStream serviceAccount = new FileInputStream("src\\main\\java\\database\\csc207musicapp-firebase-adminsdk-gzeyt-8c0d614d66.json");
+            FileInputStream serviceAccount = new FileInputStream("src/main/java/database/csc207musicapp-firebase-adminsdk-gzeyt-8c0d614d66.json");
 
             Firestore db = FirestoreOptions.getDefaultInstance()
                     .toBuilder()
@@ -23,7 +23,7 @@ public class FireStoreInitializer {
 
             System.out.println("Firestore initialized successfully!");
             // Initialize Firebase
-            FileInputStream serviceAccount1 = new FileInputStream("src\\main\\java\\database\\csc207musicapp-firebase-adminsdk-gzeyt-8c0d614d66.json");
+            FileInputStream serviceAccount1 = new FileInputStream("src/main/java/database/csc207musicapp-firebase-adminsdk-gzeyt-8c0d614d66.json");
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount1))
                     .setProjectId("csc207musicapp")

@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.SetOptions;
 import com.google.cloud.firestore.WriteResult;
-
+import database.FireStoreInitializer;
 public class DBWriter {
     static final String PUBLIC_COLLECTION_NAME = "Public";
 
@@ -28,11 +28,11 @@ public class DBWriter {
         }
     }
 
-    // public static void main(String[] args) {
-    //     Firestore db = FireStoreInitializer.initializeFirestore();
-    //     if (db != null) {
-    //         DBWriter.toPublic(db, "98765432", "Richard2", 1.0, "This is a fucking shit artist");
-    //     }
-    // }
+     public static void main(String[] args) {
+         Firestore db = FireStoreInitializer.initializeFirestore();
+         if (db != null) {
+             DBWriter.toPublic(db, "98765432", "Richard2", 1.0, "This is a fucking shit artist");
+         }
+     }
     
 }

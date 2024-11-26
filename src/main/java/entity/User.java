@@ -1,7 +1,9 @@
 package entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -93,4 +95,10 @@ public class User {
 
     }
 
+    public Map<String, String> getSignInInfo() {
+        Map<String, String> result = new HashMap<>();
+        result.put("username", username);
+        result.put("password", password);
+        return result;
+    }
 }

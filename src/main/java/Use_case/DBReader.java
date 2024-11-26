@@ -9,7 +9,7 @@ import com.google.cloud.firestore.Firestore;
 
 import entity.Content;
 
-public class Reader {
+public class DBReader {
     static final String PUBLIC_COLLECTION_NAME = "Public";
 
     public static Content fromPublic(Firestore db, String collectionName, String documentId) {
@@ -18,7 +18,6 @@ public class Reader {
             Content content = new Content(documentId);
 
             if (document.exists()) {
-                System.out.println("Document data: " + document.getData());
                 Map<String, Map<String, Object>> map = new HashMap<>();
                 for (String key : document.getData().keySet()) {
                     Map<String, Object> value = (Map<String, Object>) document.getData().get(key);

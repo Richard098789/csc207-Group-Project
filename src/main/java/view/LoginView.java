@@ -11,6 +11,7 @@
 
         public LoginView(UserManager userManager) {
             this.userManager = userManager; // Shared instance
+            userManager.loadUsersFromDB(); // load all user in
             LoginController controller = new LoginController(userManager);
             createAndShowGUI(controller);
         }
@@ -44,6 +45,7 @@
                 String password = new String(passwordField.getPassword());
                 if (controller.login(username, password)) {
                     JOptionPane.showMessageDialog(frame, "Login successful!");
+                    userManager.setCurrentUser(username, password); // If login successful then load user information to currentUser.
                     frame.dispose(); // Close login window
                     new MainMenuView(userManager); // Pass shared UserManager instance to MainMenuView
                 } else {

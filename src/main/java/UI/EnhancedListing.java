@@ -1,25 +1,15 @@
 package UI;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import api.API_v2;
 import entity.Artist;
+import entity.ArtistDetailModel;
+import Controller.ArtistDetailController;
+import view.ArtistDetailView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EnhancedListing {
     private JFrame frame;
@@ -157,20 +147,18 @@ public class EnhancedListing {
         artistPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                // Navigate to ArtistDetailView when clicked
-                new view.ArtistDetailView(artist); // Pass the artist object to the detail view
-                //frame.dispose(); // Close the current window (optional)
+                ArtistDetailModel model = new ArtistDetailModel(artist);
+                ArtistDetailController controller = new ArtistDetailController(model);
+                new ArtistDetailView(model, controller);
             }
 
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                // Highlight the panel when hovered
                 artistPanel.setBackground(new Color(200, 220, 240)); // Slightly darker blue
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                // Reset the background color when mouse exits
                 artistPanel.setBackground(new Color(240, 248, 255)); // Reset to the original color
             }
         });

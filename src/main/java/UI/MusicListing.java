@@ -35,17 +35,13 @@ public class MusicListing {
         // Listings button handler
         artistButton.addActionListener(e -> new EnhancedListing());
         eventButton.addActionListener(e -> new EventListing());
-        mainMenuButton.addActionListener(new ActionListener() {
+        mainMenuButton.addActionListener(e -> {
+            // Close the current frame
+            frame.dispose();
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Close the current frame
-                frame.dispose();
+            // Open the main menu page
+            new MainProgram();
 
-                // Open the main menu page
-                new MainProgram();
-
-            }
         });
 
         frame.setVisible(true);

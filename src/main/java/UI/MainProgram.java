@@ -35,7 +35,14 @@ public class MainProgram {
         frame.add(buttonPanel, BorderLayout.CENTER);
 
         // Music Listings button handler
-        musicButton.addActionListener(e -> new EnhancedListing());
+        musicButton.addActionListener(e -> {
+            // Close the current frame
+            frame.dispose();
+
+            // Open the main menu page
+            new MusicListing();
+
+        });
 
         frame.setVisible(true);
     }

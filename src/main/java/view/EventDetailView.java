@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import entity.Event;
 
 
@@ -34,12 +35,12 @@ public class EventDetailView {
 
         // Adding information regarding the event
         detailsPanel.add(new JLabel("<html><b>Name:</b> " + event.getName() + "</html>"));
+        detailsPanel.add(new JLabel("<html><b>Artist:</b> " + event.getArtistName() + "</html>"));
         detailsPanel.add(new JLabel("<html><b>Type:</b> " + event.getType() + "</html>"));
         detailsPanel.add(new JLabel("<html><b>Begin Date:</b> " + event.getBeginDate() + "</html>"));
         detailsPanel.add(new JLabel("<html><b>End Date:</b> " + event.getEndDate() + "</html>"));
         detailsPanel.add(new JLabel("<html><b>Time:</b> " + event.getTime() + "</html>"));
         detailsPanel.add(new JLabel("<html><b>Place Name:</b> " + event.getPlaceName() + "</html>"));
-        detailsPanel.add(new JLabel("<html><b>Artist:</b> " + event.getArtistName() + "</html>"));
         detailsPanel.add(new JLabel("<html><b>Score:</b> " + event.getScore() + "</html>"));
 
         frame.add(detailsPanel, BorderLayout.CENTER);
@@ -59,5 +60,25 @@ public class EventDetailView {
 
         frame.setVisible(true);
 
+    }
+
+    // Sample Display
+    public static void main(String[] args) {
+        // Example usage
+        Event event = new Event(
+                "001",
+                "abc",
+                "Concert",
+                "2024-01-01",
+                "2024-01-05",
+                "20:30:00",
+                "Toronto",
+                "001",
+                "Nick",
+                "001",
+                100
+        );
+
+        new EventDetailView(event);
     }
 }

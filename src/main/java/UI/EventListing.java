@@ -1,6 +1,6 @@
 package UI;
 
-import api.MusicBrainzAPI;
+import api.API_v2_getEvent;
 import entity.Event;
 
 import javax.swing.*;
@@ -42,7 +42,7 @@ public class EventListing {
         locationField = new JTextField(10);
 
         // Drop down menu for type
-        String[] types = {"Concert", "Festival", "Stage performance", "Award ceremony", "Launch event", "Convention/Expo", "Masterclass/Clinic"};
+        String[] types = {"Any", "Concert", "Festival", "Stage performance", "Award ceremony", "Launch event", "Convention/Expo", "Masterclass/Clinic"};
         typeDropdown = new JComboBox<>(types);
 
         searchButton = new JButton("Search");
@@ -83,11 +83,11 @@ public class EventListing {
     }
 
     private void fetchAndDisplayListings() {
-        MusicBrainzAPI api = new MusicBrainzAPI();
+        API_v2_getEvent api = new API_v2_getEvent();
 
         try {
             // Fetch paginated events data using input parameters
-            Event[] events = api.getEvents(searchEvent, searchType, searchLocation);
+            Event[] events = api.getEvents(searchEvent, searchLocation, LIMIT, offset);
 
             if (events.length == 0 && offset == 0) {
                 JLabel noDataLabel = new JLabel("No events found!");
@@ -126,7 +126,7 @@ public class EventListing {
 
     private JPanel createEventPanel(Event event) {
         JPanel eventPanel = new JPanel();
-        eventPanel.setLayout(new BorderLayout());
+        eventPanel.setLayout(new BoxLayout(eventPanel, BoxLayout.Y_AXIS));
         eventPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         eventPanel.setMaximumSize(new Dimension(750, 120));
         eventPanel.setBackground(new Color(240, 248, 255)); // Light blue background for the event panel
@@ -135,18 +135,27 @@ public class EventListing {
         JLabel nameLabel = new JLabel("<html><b>Event:</b> " + event.getName() + "</html>");
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         nameLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        eventPanel.add(nameLabel, BorderLayout.NORTH);
+        eventPanel.add(nameLabel);
 
         // Additional info label
         JLabel additionalInfoLabel = new JLabel("<html><b>Type:</b> " + event.getType() +
                 " | <b>Artist:</b> " + event.getArtistName() +
-                " | <b>Location:</b> " + event.getPlaceName() +
-                " | <b>Begin Date:</b> " + event.getBeginDate() +
+                " | <b>Location:</b> " + event.getPlaceName() + "</html>");
+
+        JLabel additionalInfoLabel1 = new JLabel("<html><b>Begin Date:</b> " + event.getBeginDate() +
                 " | <b>End Date:</b> " + event.getEndDate() +
                 " | <b>Score:</b> " + event.getScore() + "</html>");
+
         additionalInfoLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         additionalInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        eventPanel.add(additionalInfoLabel, BorderLayout.CENTER);
+
+        additionalInfoLabel1.setFont(new Font("Arial", Font.PLAIN, 16));
+        additionalInfoLabel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        eventPanel.add(additionalInfoLabel);
+        eventPanel.add(additionalInfoLabel1);
+        eventPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         // Add MouseListener to detect clicks
         eventPanel.addMouseListener(new java.awt.event.MouseAdapter() {

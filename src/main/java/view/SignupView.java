@@ -1,9 +1,17 @@
 package view;
 
-import Use_case.UserManager;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import Use_case.UserManager;
 
 public class SignupView {
     private final UserManager userManager;
@@ -51,8 +59,9 @@ public class SignupView {
             } else if (userManager.userExists(username)) {
                 JOptionPane.showMessageDialog(frame, "Username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                userManager.addUser(username, password);
-                JOptionPane.showMessageDialog(frame, "Account created successfully!");
+                if (userManager.addUser(username, password)) {
+                    JOptionPane.showMessageDialog(frame, "Account created successfully!");
+                } else {JOptionPane.showMessageDialog(frame, "Account already exists!");}
                 frame.dispose(); // Close the sign-up window
                 new LoginView(userManager); // Return to LoginView
             }

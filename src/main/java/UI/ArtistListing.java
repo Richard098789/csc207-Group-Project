@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class EnhancedListing {
+public class ArtistListing {
     private JFrame frame;
     private JPanel listingPanel;
     private JScrollPane scrollPane;
@@ -27,7 +27,7 @@ public class EnhancedListing {
     private String searchCountry = ""; // Search filter for country
     private String searchType = ""; // Search filter for type
 
-    public EnhancedListing() {
+    public ArtistListing() {
         frame = new JFrame("Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 900);
@@ -196,6 +196,6 @@ public class EnhancedListing {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(EnhancedListing::new);
+        SwingUtilities.invokeLater(ArtistListing::new);
     }
 }

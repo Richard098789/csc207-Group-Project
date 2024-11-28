@@ -2,10 +2,12 @@ package UI;
 
 import api.API_v2;
 import entity.Artist;
-import entity.ArtistDetailModel;
+import entity.Content;
 import Controller.ArtistDetailController;
 import view.ArtistDetailView;
+import database.FireStoreInitializer;
 
+import com.google.cloud.firestore.Firestore;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,8 +28,16 @@ public class ArtistListing {
     private String searchArtist = ""; // Search filter for artist name
     private String searchCountry = ""; // Search filter for country
     private String searchType = ""; // Search filter for type
+    private Firestore db;
 
     public ArtistListing() {
+        // Initialize Firestore
+        db = FireStoreInitializer.initializeFirestore();
+        if (db == null) {
+            JOptionPane.showMessageDialog(null, "Failed to initialize Firestore. Application will exit.", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+
         frame = new JFrame("Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 900);
@@ -99,7 +109,8 @@ public class ArtistListing {
                 for (Artist artist : artists) {
                     // Filter by type if specified
                     if (searchType.equals("Any") || artist.getType().equalsIgnoreCase(searchType)) {
-                        listingPanel.add(createArtistPanel(artist));
+                        Content content = new Content(artist.getId());
+                        listingPanel.add(createArtistPanel(artist, content));
                     }
                 }
 
@@ -119,10 +130,12 @@ public class ArtistListing {
             JLabel errorLabel = new JLabel("Error fetching artists: " + e.getMessage());
             errorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
             listingPanel.add(errorLabel);
+            listingPanel.revalidate();
+            listingPanel.repaint();
         }
     }
 
-    private JPanel createArtistPanel(Artist artist) {
+    private JPanel createArtistPanel(Artist artist, Content content) {
         JPanel artistPanel = new JPanel();
         artistPanel.setLayout(new BorderLayout());
         artistPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -147,9 +160,8 @@ public class ArtistListing {
         artistPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ArtistDetailModel model = new ArtistDetailModel(artist);
-                ArtistDetailController controller = new ArtistDetailController(model);
-                new ArtistDetailView(model, controller);
+                ArtistDetailController controller = new ArtistDetailController(artist, content, db);
+                new ArtistDetailView(controller);
             }
 
             @Override

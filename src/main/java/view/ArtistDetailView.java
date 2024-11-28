@@ -1,18 +1,17 @@
 package view;
 
 import Controller.ArtistDetailController;
-import entity.ArtistDetailModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.Map;
 
 public class ArtistDetailView {
     private JFrame frame;
-    private final ArtistDetailModel model;
     private final ArtistDetailController controller;
 
-    public ArtistDetailView(ArtistDetailModel model, ArtistDetailController controller) {
-        this.model = model;
+    public ArtistDetailView(ArtistDetailController controller) {
         this.controller = controller;
         createAndShowGUI();
     }
@@ -33,11 +32,12 @@ public class ArtistDetailView {
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        detailsPanel.add(createDetailLabel("Artist Name: ", model.getArtist().getArtistName()));
-        detailsPanel.add(createDetailLabel("ID: ", model.getArtist().getId()));
-        detailsPanel.add(createDetailLabel("Country: ", model.getArtist().getCountry()));
-        detailsPanel.add(createDetailLabel("Score: ", String.valueOf(model.getArtist().getScore())));
-        detailsPanel.add(createDetailLabel("Type: ", model.getArtist().getType()));
+        detailsPanel.add(createDetailLabel("Artist Name: ", controller.getArtist().getArtistName()));
+        detailsPanel.add(createDetailLabel("ID: ", controller.getArtist().getId()));
+        detailsPanel.add(createDetailLabel("Country: ", controller.getArtist().getCountry()));
+        detailsPanel.add(createDetailLabel("Score: ", String.valueOf(controller.getArtist().getScore())));
+        detailsPanel.add(createDetailLabel("Type: ", controller.getArtist().getType()));
+        detailsPanel.add(createDetailLabel("Average Rating: ", String.valueOf(controller.getAverageRating())));
 
         frame.add(detailsPanel, BorderLayout.CENTER);
 
@@ -88,17 +88,51 @@ public class ArtistDetailView {
                 // Clear fields
                 ratingDropdown.setSelectedIndex(0);
                 commentBox.setText("");
+
+                // Refresh average rating and comments
+                loadComments();
+                detailsPanel.removeAll();
+                detailsPanel.add(createDetailLabel("Artist Name: ", controller.getArtist().getArtistName()));
+                detailsPanel.add(createDetailLabel("ID: ", controller.getArtist().getId()));
+                detailsPanel.add(createDetailLabel("Country: ", controller.getArtist().getCountry()));
+                detailsPanel.add(createDetailLabel("Score: ", String.valueOf(controller.getArtist().getScore())));
+                detailsPanel.add(createDetailLabel("Type: ", controller.getArtist().getType()));
+                detailsPanel.add(createDetailLabel("Average Rating: ", String.valueOf(controller.getAverageRating())));
+                detailsPanel.revalidate();
+                detailsPanel.repaint();
             }
         });
         userInputPanel.add(addButton);
 
         frame.add(userInputPanel, BorderLayout.SOUTH);
 
+        // Load existing comments
+        loadComments();
+
         frame.setVisible(true);
     }
 
+    private void loadComments() {
+        JPanel commentsPanel = new JPanel();
+        commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
+        commentsPanel.setBorder(BorderFactory.createTitledBorder("Comments"));
+
+        List<Map<String, Object>> comments = controller.getComments();
+        for (Map<String, Object> comment : comments) {
+            String username = (String) comment.get("username");
+            String text = (String) comment.get("comment");
+            JLabel commentLabelItem = new JLabel("<html><b>" + username + ":</b> " + text + "</html>");
+            commentLabelItem.setFont(new Font("Arial", Font.PLAIN, 14));
+            commentsPanel.add(commentLabelItem);
+        }
+
+        frame.add(commentsPanel, BorderLayout.EAST);
+        frame.revalidate();
+        frame.repaint();
+    }
+
     private JLabel createDetailLabel(String field, String value) {
-        JLabel label = new JLabel("<html><b>" + field + "</b>" + value + "</html>");
+        JLabel label = new JLabel("<html><b>" + field + "</b>: " + value + "</html>");
         label.setFont(new Font("Arial", Font.PLAIN, 16));
         return label;
     }

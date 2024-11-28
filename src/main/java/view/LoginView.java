@@ -1,77 +1,70 @@
-    package view;
+package view;
 
-    import java.awt.BorderLayout;
-    import java.awt.GridLayout;
-
-    import javax.swing.JButton;
-    import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
-import Controller.LoginController;
+import UI.ArtistListing;
 import Use_case.UserManager;
+import Controller.LoginController;
 
-    public class LoginView {
-        private final UserManager userManager; // Shared UserManager instance
+import javax.swing.*;
+import java.awt.*;
 
-        public LoginView(UserManager userManager) {
-            this.userManager = userManager; // Shared instance
-            userManager.loadUsersFromDB(); // load all user in
-            LoginController controller = new LoginController(userManager);
-            createAndShowGUI(controller);
-        }
+public class LoginView {
+    private final UserManager userManager; // Shared UserManager instance
 
-        private void createAndShowGUI(LoginController controller) {
-            JFrame frame = new JFrame("Login Page");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 300);
-
-            JPanel panel = new JPanel();
-            panel.setLayout(new GridLayout(3, 2, 10, 10));
-
-            panel.add(new JLabel("Username:"));
-            JTextField usernameField = new JTextField();
-            panel.add(usernameField);
-
-            panel.add(new JLabel("Password:"));
-            JPasswordField passwordField = new JPasswordField();
-            panel.add(passwordField);
-
-            JButton loginButton = new JButton("Login");
-            JButton signupButton = new JButton("Sign Up");
-            panel.add(loginButton);
-            panel.add(signupButton);
-
-            frame.add(panel, BorderLayout.CENTER);
-
-            // Login Button ActionListener
-            loginButton.addActionListener(e -> {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-                if (controller.login(username, password)) {
-                    JOptionPane.showMessageDialog(frame, "Login successful!");
-                    userManager.setCurrentUser(username, password); // If login successful then load user information to currentUser.
-                    frame.dispose(); // Close login window
-                    new MainMenuView(userManager); // Pass shared UserManager instance to MainMenuView
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            });
-
-            // Sign-Up Button ActionListener
-            signupButton.addActionListener(e -> {
-                frame.dispose(); // Close login window
-                new SignupView(userManager); // Pass shared UserManager instance to SignupView
-            });
-
-            frame.setVisible(true);
-        }
-
-        public static void main(String[] args) {
-            UserManager userManager = new UserManager(); // Shared instance
-            new LoginView(userManager);
-        }
+    public LoginView(UserManager userManager) {
+        this.userManager = userManager; // Shared instance
+        userManager.loadUsersFromDB(); // Load all users
+        LoginController controller = new LoginController(userManager);
+        createAndShowGUI(controller);
     }
+
+    private void createAndShowGUI(LoginController controller) {
+        JFrame frame = new JFrame("Login Page");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2, 10, 10));
+
+        panel.add(new JLabel("Username:"));
+        JTextField usernameField = new JTextField();
+        panel.add(usernameField);
+
+        panel.add(new JLabel("Password:"));
+        JPasswordField passwordField = new JPasswordField();
+        panel.add(passwordField);
+
+        JButton loginButton = new JButton("Login");
+        JButton signupButton = new JButton("Sign Up");
+        panel.add(loginButton);
+        panel.add(signupButton);
+
+        frame.add(panel, BorderLayout.CENTER);
+
+        // Login Button ActionListener
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText().trim();
+            String password = new String(passwordField.getPassword()).trim();
+            if (controller.login(username, password)) {
+                JOptionPane.showMessageDialog(frame, "Login successful!");
+                userManager.setCurrentUser(username, password); // Set the current user after successful login
+                frame.dispose(); // Close login window
+                new ArtistListing(); // Assuming this opens the artist listing page
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Sign-Up Button ActionListener
+        signupButton.addActionListener(e -> {
+            frame.dispose(); // Close login window
+            new SignupView(userManager); // Pass shared UserManager instance to SignupView
+        });
+
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        UserManager userManager = new UserManager(); // Shared instance
+        new LoginView(userManager);
+    }
+}

@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Use_case.UserManager;
-import UI.EnhancedListing; // Import the music listing UI
+import UI.SearchSelection;
 
 public class MainMenuView {
     private final UserManager userManager;
@@ -38,7 +38,7 @@ public class MainMenuView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the main menu window
-                new EnhancedListing(); // Open the music listing window
+                new SearchSelection(); // Open the music listing window
             }
         });
 

@@ -1,15 +1,23 @@
 package UI;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 
-public class MusicListing {
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import Use_case.UserManager;
+import view.MainMenuView;
+
+public class SearchSelection {
 
     private JFrame frame;
 
-    public MusicListing() {
+    public SearchSelection() {
         frame = new JFrame("Music Listing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
@@ -33,14 +41,14 @@ public class MusicListing {
         frame.add(buttonPanel, BorderLayout.CENTER);
 
         // Listings button handler
-        artistButton.addActionListener(e -> new EnhancedListing());
+        artistButton.addActionListener(e -> new ArtistListing());
         eventButton.addActionListener(e -> new EventListing());
         mainMenuButton.addActionListener(e -> {
             // Close the current frame
             frame.dispose();
 
             // Open the main menu page
-            new MainProgram();
+            new MainMenuView(new UserManager()); // Require to be fixed: usermanager should inherit from the previous ones.
 
         });
 
@@ -48,7 +56,7 @@ public class MusicListing {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MusicListing::new);
+        SwingUtilities.invokeLater(SearchSelection::new);
     }
 
 }

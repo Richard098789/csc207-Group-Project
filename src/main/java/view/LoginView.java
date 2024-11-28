@@ -1,10 +1,18 @@
     package view;
 
-    import Controller.LoginController;
-    import Use_case.UserManager;
+    import java.awt.BorderLayout;
+    import java.awt.GridLayout;
 
-    import javax.swing.*;
-    import java.awt.*;
+    import javax.swing.JButton;
+    import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import Controller.LoginController;
+import Use_case.UserManager;
 
     public class LoginView {
         private final UserManager userManager; // Shared UserManager instance

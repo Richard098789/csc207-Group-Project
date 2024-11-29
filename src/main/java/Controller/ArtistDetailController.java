@@ -1,11 +1,11 @@
 package Controller;
 
+import Use_case.DBReader;
 import Use_case.DBWriter;
 import Use_case.UserManager;
 import com.google.cloud.firestore.Firestore;
 import entity.Artist;
 import entity.Content;
-import Use_case.DBReader;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +19,10 @@ public class ArtistDetailController {
         this.artist = artist;
         this.content = content;
         this.db = db;
+
+        // Fetch and set the initial average rating
+        double averageRating = DBReader.getAverageRating(db, artist.getId());
+        content.setAverageRating(averageRating);
     }
 
     public Artist getArtist() {
@@ -37,16 +41,18 @@ public class ArtistDetailController {
 
         String username = UserManager.currentUser.getUsername();
 
-        // Add comment to Firestore using the new addComment() method
+        // Add comment and rating to Firestore
         DBWriter.addComment(db, artist.getId(), username, (double) rating, comment);
 
-        // Update the local content object with the new comment
-        content.getContent().put(username, Map.of("rating", rating, "comment", comment));
-        content.setAverageRating();
+        // Update the local content object with the new comment and rating
+        content.getContent().put(username, Map.of("rating", (double) rating, "comment", comment));
+
+        // Update the average rating
+        double newAverageRating = DBReader.getAverageRating(db, artist.getId());
+        content.setAverageRating(newAverageRating);
     }
 
     public List<Map<String, Object>> getComments() {
-        // Logic to fetch and return comments for the current artist from Firestore
         return DBReader.readComments(db, artist.getId());
     }
 

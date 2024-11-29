@@ -1,18 +1,17 @@
 package Use_case;
 
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.SetOptions;
+import com.google.cloud.firestore.WriteResult;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
-import database.FireStoreInitializer;
-import com.google.cloud.firestore.SetOptions;
-
 public class DBWriter {
-    static final String ARTIST_COLLECTION_NAME = "artists";
+    static final String COLLECTION_NAME = "artists";
 
-    public static void addComment(Firestore db, String artistId, String username, Double rating, String comment) {
+    public static void addComment(Firestore db, String artistId, String username, double rating, String comment) {
         try {
             // Prepare data to write
             Map<String, Object> commentData = new HashMap<>();
@@ -20,25 +19,17 @@ public class DBWriter {
             commentData.put("rating", rating);
             commentData.put("comment", comment);
 
-            // Write data to Firestore under the artist's comments subcollection
-            WriteResult result = db.collection(ARTIST_COLLECTION_NAME)
+            // Add to Firestore under the artist's collection
+            WriteResult result = db.collection(COLLECTION_NAME)
                     .document(artistId)
                     .collection("comments")
-                    .document() // Let Firestore auto-generate a unique document ID for each comment
-                    .set(commentData, SetOptions.merge()) // Merge in case there are existing fields
+                    .document()  // Auto-generate document ID for each comment
+                    .set(commentData, SetOptions.merge())
                     .get();
 
-            System.out.println("Comment successfully written to Firestore with timestamp: " + result.getUpdateTime());
+            System.out.println("Document written successfully: " + result.getUpdateTime());
         } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error writing comment to database: " + e.getMessage());
-        }
-    }
-
-    // Main method for testing purposes
-    public static void main(String[] args) {
-        Firestore db = FireStoreInitializer.initializeFirestore();
-        if (db != null) {
-            addComment(db, "artist12345", "JohnDoe", 5.0, "Amazing artist!");
+            System.err.println("Error writing document: " + e.getMessage());
         }
     }
 }

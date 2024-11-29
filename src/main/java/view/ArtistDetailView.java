@@ -10,6 +10,7 @@ import java.util.Map;
 public class ArtistDetailView {
     private JFrame frame;
     private final ArtistDetailController controller;
+    private JPanel detailsPanel;
 
     public ArtistDetailView(ArtistDetailController controller) {
         this.controller = controller;
@@ -28,16 +29,10 @@ public class ArtistDetailView {
         frame.add(titleLabel, BorderLayout.NORTH);
 
         // Artist Details Panel
-        JPanel detailsPanel = new JPanel();
+        detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        detailsPanel.add(createDetailLabel("Artist Name: ", controller.getArtist().getArtistName()));
-        detailsPanel.add(createDetailLabel("ID: ", controller.getArtist().getId()));
-        detailsPanel.add(createDetailLabel("Country: ", controller.getArtist().getCountry()));
-        detailsPanel.add(createDetailLabel("Score: ", String.valueOf(controller.getArtist().getScore())));
-        detailsPanel.add(createDetailLabel("Type: ", controller.getArtist().getType()));
-        detailsPanel.add(createDetailLabel("Average Rating: ", String.valueOf(controller.getAverageRating())));
+        updateDetailsPanel();
 
         frame.add(detailsPanel, BorderLayout.CENTER);
 
@@ -89,17 +84,9 @@ public class ArtistDetailView {
                 ratingDropdown.setSelectedIndex(0);
                 commentBox.setText("");
 
-                // Refresh average rating and comments
+                // Refresh average rating and other details
+                updateDetailsPanel();
                 loadComments();
-                detailsPanel.removeAll();
-                detailsPanel.add(createDetailLabel("Artist Name: ", controller.getArtist().getArtistName()));
-                detailsPanel.add(createDetailLabel("ID: ", controller.getArtist().getId()));
-                detailsPanel.add(createDetailLabel("Country: ", controller.getArtist().getCountry()));
-                detailsPanel.add(createDetailLabel("Score: ", String.valueOf(controller.getArtist().getScore())));
-                detailsPanel.add(createDetailLabel("Type: ", controller.getArtist().getType()));
-                detailsPanel.add(createDetailLabel("Average Rating: ", String.valueOf(controller.getAverageRating())));
-                detailsPanel.revalidate();
-                detailsPanel.repaint();
             }
         });
         userInputPanel.add(addButton);
@@ -110,6 +97,21 @@ public class ArtistDetailView {
         loadComments();
 
         frame.setVisible(true);
+    }
+
+    private void updateDetailsPanel() {
+        // Remove all components and add updated artist details
+        detailsPanel.removeAll();
+
+        detailsPanel.add(createDetailLabel("Artist Name: ", controller.getArtist().getArtistName()));
+        detailsPanel.add(createDetailLabel("ID: ", controller.getArtist().getId()));
+        detailsPanel.add(createDetailLabel("Country: ", controller.getArtist().getCountry()));
+        detailsPanel.add(createDetailLabel("Score: ", String.valueOf(controller.getArtist().getScore())));
+        detailsPanel.add(createDetailLabel("Type: ", controller.getArtist().getType()));
+        detailsPanel.add(createDetailLabel("Average Rating: ", String.valueOf(controller.getAverageRating())));
+
+        detailsPanel.revalidate();
+        detailsPanel.repaint();
     }
 
     private void loadComments() {

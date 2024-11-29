@@ -48,7 +48,7 @@ public class LoginView {
                 JOptionPane.showMessageDialog(frame, "Login successful!");
                 userManager.setCurrentUser(username, password); // Set the current user after successful login
                 frame.dispose(); // Close login window
-                new ArtistListing(); // Assuming this opens the artist listing page
+                new MainMenuView(userManager); // Show MainMenuView after login
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
             }

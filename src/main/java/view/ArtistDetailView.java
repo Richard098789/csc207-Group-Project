@@ -10,7 +10,8 @@ import java.util.Map;
 public class ArtistDetailView {
     private JFrame frame;
     private final ArtistDetailController controller;
-    private JPanel detailsPanel;
+    private JPanel detailsPanel; // Store reference to details panel for updates
+    private JPanel commentsPanel; // Store reference to comments panel
 
     public ArtistDetailView(ArtistDetailController controller) {
         this.controller = controller;
@@ -19,7 +20,7 @@ public class ArtistDetailView {
 
     private void createAndShowGUI() {
         frame = new JFrame("Artist Details");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only this window
         frame.setSize(600, 500);
         frame.setLayout(new BorderLayout());
 
@@ -64,8 +65,32 @@ public class ArtistDetailView {
         JTextArea commentBox = new JTextArea(3, 20);
         commentBox.setLineWrap(true);
         commentBox.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(commentBox);
-        userInputPanel.add(scrollPane);
+        JScrollPane commentScrollPane = new JScrollPane(commentBox);
+        commentScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        userInputPanel.add(commentScrollPane);
+
+        // Emoji Button
+        JButton emojiButton = new JButton("Emoji");
+        emojiButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        emojiButton.addActionListener(e -> {
+            String[] emojis = {
+                    "😀", "😂", "😍", "😢", "😡", "👍", "👎", "👏", "🙌", "🔥",
+                    "💯", "😎", "🤔", "😭", "🥳", "😇", "🤩", "🥺", "😤", "🤗",
+                    "😱", "😜", "💖", "🎶", "🎉"
+            };
+            String selectedEmoji = (String) JOptionPane.showInputDialog(
+                    frame,
+                    "Choose an emoji",
+                    "Emoji Picker",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    emojis,
+                    emojis[0]);
+            if (selectedEmoji != null) {
+                commentBox.append(selectedEmoji);
+            }
+        });
+        userInputPanel.add(emojiButton);
 
         // Add Button
         JButton addButton = new JButton("Add");
@@ -84,7 +109,7 @@ public class ArtistDetailView {
                 ratingDropdown.setSelectedIndex(0);
                 commentBox.setText("");
 
-                // Refresh average rating and other details
+                // Refresh average rating and comments
                 updateDetailsPanel();
                 loadComments();
             }
@@ -115,18 +140,33 @@ public class ArtistDetailView {
     }
 
     private void loadComments() {
-        JPanel commentsPanel = new JPanel();
+        // Clear previous comments
+        if (commentsPanel != null) {
+            frame.remove(commentsPanel);
+        }
+
+        // Create a scrollable text area for comments
+        commentsPanel = new JPanel();
         commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
         commentsPanel.setBorder(BorderFactory.createTitledBorder("Comments"));
 
+        JTextArea commentsTextArea = new JTextArea(10, 30);
+        commentsTextArea.setEditable(false);
+        commentsTextArea.setLineWrap(true);
+        commentsTextArea.setWrapStyleWord(true);
+
         List<Map<String, Object>> comments = controller.getComments();
+        StringBuilder allComments = new StringBuilder();
         for (Map<String, Object> comment : comments) {
             String username = (String) comment.get("username");
             String text = (String) comment.get("comment");
-            JLabel commentLabelItem = new JLabel("<html><b>" + username + ":</b> " + text + "</html>");
-            commentLabelItem.setFont(new Font("Arial", Font.PLAIN, 14));
-            commentsPanel.add(commentLabelItem);
+            allComments.append(username).append(": ").append(text).append("\n");
         }
+
+        commentsTextArea.setText(allComments.toString());
+        JScrollPane commentsScrollPane = new JScrollPane(commentsTextArea);
+        commentsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        commentsPanel.add(commentsScrollPane);
 
         frame.add(commentsPanel, BorderLayout.EAST);
         frame.revalidate();

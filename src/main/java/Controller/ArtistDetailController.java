@@ -3,9 +3,11 @@ package Controller;
 import Use_case.DBReader;
 import Use_case.DBWriter;
 import Use_case.UserManager;
+import api.MusicBrainzAPI;
 import com.google.cloud.firestore.Firestore;
 import entity.Artist;
 import entity.Content;
+import entity.Recording;
 
 import java.util.List;
 import java.util.Map;
@@ -14,11 +16,13 @@ public class ArtistDetailController {
     private final Artist artist;
     private final Content content;
     private final Firestore db;
+    private final MusicBrainzAPI musicBrainzAPI;
 
     public ArtistDetailController(Artist artist, Content content, Firestore db) {
         this.artist = artist;
         this.content = content;
         this.db = db;
+        this.musicBrainzAPI = new MusicBrainzAPI();
 
         // Fetch and set the initial average rating
         double averageRating = DBReader.getAverageRating(db, artist.getId());
@@ -58,5 +62,9 @@ public class ArtistDetailController {
 
     public double getAverageRating() {
         return content.getAverageRating();
+    }
+
+    public Recording[] getSongs() {
+        return musicBrainzAPI.getSongsByArtist(artist.getId());
     }
 }

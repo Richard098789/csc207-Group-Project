@@ -1,18 +1,26 @@
 package Use_case.artist_search;
 
 import entity.Artist;
-import repository.ArtistSearchRepository;
 
 public class ArtistSearchInteractor implements ArtistSearchInputBoundary {
-    private final ArtistSearchRepository repository;
+    private final MusicBrainzArtistRepository repository;
+    private final ArtistSearchOutputBoundary outputBoundary;
 
-    public ArtistSearchInteractor(ArtistSearchRepository repository) {
+    public ArtistSearchInteractor(MusicBrainzArtistRepository repository, ArtistSearchOutputBoundary outputBoundary) {
         this.repository = repository;
+        this.outputBoundary = outputBoundary;
     }
 
     @Override
-    public void searchArtists(ArtistSearchInputData inputData, ArtistSearchOutputBoundary outputBoundary) {
-        Artist[] artists = repository.searchArtists(inputData.getArtistName(), inputData.getCountry(), inputData.getLimit(), inputData.getOffset());
-        outputBoundary.presentResults(artists);
+    public void execute(ArtistSearchInputData inputData) {
+        Artist[] artists = repository.getArtists(
+                inputData.getArtistName(),
+                inputData.getCountry(),
+                inputData.getLimit(),
+                inputData.getOffset()
+        );
+
+        ArtistSearchOutputData outputData = new ArtistSearchOutputData(artists);
+        outputBoundary.presentResults(outputData);
     }
 }

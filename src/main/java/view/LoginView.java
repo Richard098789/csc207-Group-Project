@@ -8,10 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LoginView {
-    private final UserManager userManager; // Shared UserManager instance
+    private LoginController loginController;
 
-    public LoginView(UserManager userManager) {
-        this.userManager = userManager; // Shared instance
+    public LoginView() {
         userManager.loadUsersFromDB(); // Load all users
         LoginController controller = new LoginController(userManager);
         createAndShowGUI(controller);
@@ -44,20 +43,13 @@ public class LoginView {
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
-            if (controller.login(username, password)) {
-                JOptionPane.showMessageDialog(frame, "Login successful!");
-                userManager.setCurrentUser(username, password); // Set the current user after successful login
-                frame.dispose(); // Close login window
-                new MainMenuView(userManager); // Show MainMenuView after login
-            } else {
-                JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            loginController.login(username, password);
         });
 
         // Sign-Up Button ActionListener
         signupButton.addActionListener(e -> {
             frame.dispose(); // Close login window
-            new SignupView(userManager); // Pass shared UserManager instance to SignupView
+            new SignupView(); // Pass shared UserManager instance to SignupView
         });
 
         frame.setVisible(true);
@@ -65,6 +57,6 @@ public class LoginView {
 
     public static void main(String[] args) {
         UserManager userManager = new UserManager(); // Shared instance
-        new LoginView(userManager);
+        new LoginView();
     }
 }

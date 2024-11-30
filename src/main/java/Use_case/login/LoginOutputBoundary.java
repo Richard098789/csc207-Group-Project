@@ -1,5 +1,7 @@
 package Use_case.login;
 
-public interface  LoginOutputBoundary {
-    
+public interface LoginOutputBoundary {
+    void prepareMainMenuView();
+
+    void prepareFailView();
 }

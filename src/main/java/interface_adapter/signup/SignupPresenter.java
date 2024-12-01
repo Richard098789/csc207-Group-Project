@@ -1,9 +1,7 @@
-package interface_adapter;
+package interface_adapter.signup;
 
 import Use_case.signup.SignupOutputBoundary;
 import view.SignupView_New;
-
-import javax.swing.*;
 
 public class SignupPresenter implements SignupOutputBoundary {
 

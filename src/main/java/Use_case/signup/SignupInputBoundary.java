@@ -3,7 +3,7 @@ package Use_case.signup;
 public interface SignupInputBoundary {
 
     /**
-     * Executes the signup use case.
+     * Executes the interface_adapter.signup use case.
      * @param signupInputData the input data
      */
     void execute(SignupInputData signupInputData);

@@ -1,6 +1,6 @@
 package view;
 
-import interface_adapter.SignupController;
+import interface_adapter.signup.SignupController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +56,7 @@ public class SignupView_New {
     }
 
     public static void main(String[] args) {
-        // Ensure the GUI is created on the Event Dispatch Thread (EDT)
+
         SwingUtilities.invokeLater(() -> {
             SignupView_New signupView = new SignupView_New();
             signupView.createAndShowGUI();

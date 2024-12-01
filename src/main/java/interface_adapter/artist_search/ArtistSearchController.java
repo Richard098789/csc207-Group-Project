@@ -1,4 +1,4 @@
-package Controller;
+package interface_adapter.artist_search;
 
 import Use_case.artist_search.ArtistSearchInputBoundary;
 import Use_case.artist_search.ArtistSearchInputData;

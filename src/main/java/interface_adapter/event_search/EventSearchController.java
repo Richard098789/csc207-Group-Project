@@ -1,4 +1,4 @@
-package Controller;
+package interface_adapter.event_search;
 
 import Use_case.event_search.EventSearchInputBoundary;
 import Use_case.event_search.EventSearchInputData;

@@ -1,5 +1,7 @@
-package Use_case.event_search;
+package interface_adapter.event_search;
 
+import Use_case.event_search.EventSearchOutputBoundary;
+import Use_case.event_search.EventSearchOutputData;
 import entity.Event;
 
 public class EventSearchPresenter implements EventSearchOutputBoundary {

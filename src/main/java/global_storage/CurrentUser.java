@@ -5,9 +5,17 @@ import database.FireStoreInitializer;
 
 public class CurrentUser {
     public static String username = "";
-    public static Firestore db;
+    public static Firestore db = FireStoreInitializer.initializeFirestore();
 
-    public CurrentUser() {
-        db = FireStoreInitializer.initializeFirestore();
+    public static void setCurrentUser(String username) {
+        CurrentUser.username = username;
+    }
+
+    public static void clear() {
+        CurrentUser.username = "";
+    }
+
+    public static boolean isLoggedIn() {
+        return !username.isEmpty();
     }
 }

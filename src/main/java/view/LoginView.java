@@ -1,22 +1,16 @@
 package view;
 
-import UI.ArtistListing;
-import Use_case.UserManager;
-import Controller.LoginController;
-
+import global_storage.CurrentUser;
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView {
-    private LoginController loginController;
 
     public LoginView() {
-        userManager.loadUsersFromDB(); // Load all users
-        LoginController controller = new LoginController(userManager);
-        createAndShowGUI(controller);
+        createAndShowGUI();
     }
 
-    private void createAndShowGUI(LoginController controller) {
+    private void createAndShowGUI() {
         JFrame frame = new JFrame("Login Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
@@ -42,21 +36,38 @@ public class LoginView {
         // Login Button ActionListener
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
-            String password = new String(passwordField.getPassword()).trim();
-            loginController.login(username, password);
+            String password = new String(passwordField.getPassword());
+
+            if (authenticateUser(username, password)) {
+                JOptionPane.showMessageDialog(frame, "Login successful!");
+                CurrentUser.setCurrentUser(username);
+                frame.dispose();
+                new MainMenuView();
+            } else {
+                JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
-        // Sign-Up Button ActionListener
+        // Sign Up Button ActionListener
         signupButton.addActionListener(e -> {
-            frame.dispose(); // Close login window
-            new SignupView(); // Pass shared UserManager instance to SignupView
+            frame.dispose();
+            new SignupView();
         });
 
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        UserManager userManager = new UserManager(); // Shared instance
-        new LoginView();
+    private boolean authenticateUser(String username, String password) {
+        try {
+            var userDoc = CurrentUser.db.collection("Users")
+                    .document(username)
+                    .get()
+                    .get();
+
+            return userDoc.exists() && password.equals(userDoc.getString("password"));
+        } catch (Exception e) {
+            System.err.println("Error during authentication: " + e.getMessage());
+            return false;
+        }
     }
 }

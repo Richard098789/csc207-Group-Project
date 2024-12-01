@@ -18,16 +18,16 @@ public class SignupInteractor implements SignupInputBoundary{
         String confirmPassword = signupInputData.getRepeatPassword();
 
         if (userDataAccessObject.userExists(username)) {
-            userPresenter.prepareFailView("User already exists.");
+            userPresenter.prepareFailView();
 
         }
         else if (!password.equals(confirmPassword)) {
-            userPresenter.prepareUnmatchPasswordView("Passwords don't match.");
+            userPresenter.prepareUnmatchPasswordView();
         }
 
         else {
             userDataAccessObject.addUser(username, password);
-            userPresenter.prepareSuccessView("Account created successfully!");
+            userPresenter.prepareSuccessView();
         }
     }
 

@@ -4,4 +4,6 @@ public interface LoginOutputBoundary {
     void prepareMainMenuView();
 
     void prepareFailView();
+
+    void goSignupView();
 }

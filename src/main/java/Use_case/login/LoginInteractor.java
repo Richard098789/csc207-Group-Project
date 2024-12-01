@@ -21,11 +21,17 @@ public class LoginInteractor implements LoginInputBoundary {
         final String username = loginInputData.getUsername();
         final String password = loginInputData.getPassword();
         if (loginDataAccessObject.validateLogin(username, password)) {
-            //JOptionPane.showMessageDialog(frame, "Login successful!");
             CurrentUser.username = username; // Set the current user after successful login
             loginPresenter.prepareMainMenuView();
         } else {
-            //JOptionPane.showMessageDialog(frame, "Invalid username or password!", "Error", JOptionPane.ERROR_MESSAGE);
+            loginPresenter.prepareFailView();
         }
     }
+
+    @Override
+    public void goSignupView() {
+        loginPresenter.goSignupView();
+    }
+
+
 }

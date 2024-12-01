@@ -4,17 +4,15 @@ public interface SignupOutputBoundary {
 
     /**
      * Prepares the success view for the Signup Use Case.
-     * @param successMessage the output data
      */
-    void prepareSuccessView(String successMessage);
+    void prepareSuccessView();
 
     /**
      * Prepares the failure view for the Signup Use Case.
-     * @param errorMessage the explanation of the failure
      */
-    void prepareFailView(String errorMessage);
+    void prepareFailView();
 
-    void prepareUnmatchPasswordView(String unmatchPasswordMessage);
+    void prepareUnmatchPasswordView();
 
     /**
      * Switches to the Login View.

@@ -1,38 +1,35 @@
 package Use_case;
 
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.SetOptions;
+import com.google.cloud.firestore.WriteResult;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.SetOptions;
-import com.google.cloud.firestore.WriteResult;
-import database.FireStoreInitializer;
 public class DBWriter {
-    static final String PUBLIC_COLLECTION_NAME = "Public";
+    static final String COLLECTION_NAME = "artists";
 
-    public static void toPublic(Firestore db, String contentID, String UserName, Double rating, String comment) {
+    public static void addComment(Firestore db, String artistId, String username, double rating, String comment) {
         try {
             // Prepare data to write
-            Map<String, Map<String, Object>> data = new HashMap<>();
-            Map<String, Object> content = new HashMap<>();
-            content.put("rating", rating);
-            content.put("comment", comment);
-            data.put(UserName, content);
+            Map<String, Object> commentData = new HashMap<>();
+            commentData.put("username", username);
+            commentData.put("rating", rating);
+            commentData.put("comment", comment);
 
-            // Write data to Firestore
-            WriteResult result = db.collection(PUBLIC_COLLECTION_NAME).document(contentID).set(data, SetOptions.merge()).get(); // SetOption to merge so that it would not override previous data.
-            System.out.println("Document written successfully");
+            // Add to Firestore under the artist's collection
+            WriteResult result = db.collection(COLLECTION_NAME)
+                    .document(artistId)
+                    .collection("comments")
+                    .document()  // Auto-generate document ID for each comment
+                    .set(commentData, SetOptions.merge())
+                    .get();
+
+            System.out.println("Document written successfully: " + result.getUpdateTime());
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error writing document: " + e.getMessage());
         }
     }
-
-     public static void main(String[] args) {
-         Firestore db = FireStoreInitializer.initializeFirestore();
-         if (db != null) {
-             DBWriter.toPublic(db, "98765432", "Richard2", 1.0, "This is a fucking shit artist");
-         }
-     }
-    
 }

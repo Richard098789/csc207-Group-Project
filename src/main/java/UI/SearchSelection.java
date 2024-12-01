@@ -48,7 +48,7 @@ public class SearchSelection {
             frame.dispose();
 
             // Open the main menu page
-            new MainMenuView(new UserManager()); // Require to be fixed: usermanager should inherit from the previous ones.
+            new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
 
         });
 

@@ -1,9 +1,7 @@
 package entity;
 
-
 import java.util.HashMap;
 import java.util.Map;
-
 
 /**
  * This class represents the content of an Artist, Event, or Recording.
@@ -13,14 +11,12 @@ import java.util.Map;
  */
 public class Content {
     private final String contentId;
-
     private Map<String, Map<String, Object>> content;
     private double averageRating;
 
     public Content(String contentId) {
         this.contentId = contentId;
         this.content = new HashMap<>();
-
     }
 
     /**
@@ -33,8 +29,6 @@ public class Content {
 
     /**
      * Returns the list of user IDs for this content.
-
-     *
      * @return the list of user IDs.
      */
     public Map<String, Map<String, Object>> getContent() {
@@ -45,13 +39,16 @@ public class Content {
         this.content = content;
     }
 
-    public void setAverageRating() {
-        this.averageRating = getRating();
+    /**
+     * Sets the average rating of the content directly.
+     * @param averageRating the calculated average rating to set.
+     */
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
     public double getAverageRating() {
         return this.averageRating;
-
     }
 
     /**
@@ -59,16 +56,13 @@ public class Content {
      * number between 0.0 and 10.0.
      * @return the average rating.
      */
-
     private double getRating() {
         double rating = 0.0;
         for (Map<String, Object> value : content.values()) {
-
             rating += (double) value.get("rating");
         }
         // Calculating average rating
         double average = rating / content.size();
-        return Math.round(average * 10) / 10.0; // rounded to one decimal place.
+        return Math.round(average * 10) / 10.0; // Rounded to one decimal place.
     }
-
 }

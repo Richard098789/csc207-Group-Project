@@ -1,27 +1,16 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import app.AppCoordinator;
+import interface_adapter.signup.SignupController;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
-import Use_case.UserManager;
+import javax.swing.*;
+import java.awt.*;
 
 public class SignupView {
-    private final UserManager userManager;
+    private SignupController signupController;
+    private JFrame frame;
 
-    public SignupView(UserManager userManager) {
-        this.userManager = userManager;
-        createAndShowGUI();
-    }
-
-    private void createAndShowGUI() {
+    public SignupView() {
         JFrame frame = new JFrame("Sign-Up Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
@@ -48,31 +37,43 @@ public class SignupView {
 
         frame.add(panel, BorderLayout.CENTER);
 
+        frame.setVisible(true);
+
         // Create Account Button ActionListener
         createAccountButton.addActionListener(e -> {
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
             String confirmPassword = new String(confirmPasswordField.getPassword());
 
-            if (!password.equals(confirmPassword)) {
-                JOptionPane.showMessageDialog(frame, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if (userManager.userExists(username)) {
-                JOptionPane.showMessageDialog(frame, "Username already exists!", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                if (userManager.addUser(username, password)) {
-                    JOptionPane.showMessageDialog(frame, "Account created successfully!");
-                } else {JOptionPane.showMessageDialog(frame, "Account already exists!");}
-                frame.dispose(); // Close the sign-up window
-                new LoginView(userManager); // Return to LoginView
-            }
+            signupController.execute(username, password, confirmPassword);
+
         });
 
         // Back Button ActionListener
         backButton.addActionListener(e -> {
             frame.dispose(); // Close the sign-up window
-            new LoginView(userManager); // Return to LoginView
+            signupController.switchToLoginView(); // Return to LoginView
         });
+    }
 
-        frame.setVisible(true);
+    public void setSignupController(SignupController signupController) {this.signupController = signupController;}
+
+    public void goLoginView() {
+        AppCoordinator appCoordinator = new AppCoordinator();
+        appCoordinator.createLoginView();
+    }
+
+    public void signupSuccess() {
+        JOptionPane.showMessageDialog(frame, "Account created successfully!");
+        AppCoordinator appCoordinator = new AppCoordinator();
+        appCoordinator.createLoginView();
+    }
+
+    public void signupFailure() {
+        JOptionPane.showMessageDialog(frame, "User already exists.");
+    }
+
+    public void passwordUnmatched() {
+        JOptionPane.showMessageDialog(frame, "Password is unmatched");
     }
 }

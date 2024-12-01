@@ -6,6 +6,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.UUID;
 
 public class API_v2 {
     private static final String BASE_URL = "https://musicbrainz.org/ws/2";
@@ -15,10 +16,10 @@ public class API_v2 {
         OkHttpClient client = new OkHttpClient();
         StringBuilder queryBuilder = new StringBuilder(BASE_URL + "/artist/?query=");
 
-        if (!artistName.isEmpty()) {
+        if (artistName != null && !artistName.isEmpty()) {
             queryBuilder.append("artist:").append(artistName).append(" ");
         }
-        if (!country.isEmpty()) {
+        if (country != null && !country.isEmpty()) {
             queryBuilder.append("AND country:").append(country).append(" ");
         }
 
@@ -37,7 +38,12 @@ public class API_v2 {
             Artist[] result = new Artist[artists.length()];
             for (int i = 0; i < artists.length(); i++) {
                 JSONObject artist = artists.getJSONObject(i);
+
+                // Extract artist ID from the response or generate one if not available
+                String id = artist.optString("id", UUID.randomUUID().toString());
+
                 result[i] = Artist.builder()
+                        .id(id)  // Use the extracted or generated ID
                         .artistName(artist.getString("name"))
                         .type(artist.optString("type", "N/A"))
                         .score(artist.optInt("score", 0))
@@ -50,5 +56,4 @@ public class API_v2 {
             throw new RuntimeException("Error fetching artists: " + e.getMessage());
         }
     }
-
 }

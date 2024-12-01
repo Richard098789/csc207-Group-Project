@@ -8,10 +8,8 @@ import Use_case.UserManager;
 import UI.SearchSelection;
 
 public class MainMenuView {
-    private final UserManager userManager;
 
-    public MainMenuView(UserManager userManager) {
-        this.userManager = userManager;
+    public MainMenuView() {
         createAndShowGUI();
     }
 
@@ -47,7 +45,7 @@ public class MainMenuView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the main menu
-                new LoginView(userManager); // Go back to the login view
+                new LoginView(); // Go back to the login view
             }
         });
 

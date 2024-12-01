@@ -1,6 +1,7 @@
 package data_access;
 
 import Use_case.login.LoginDataAccessInterface;
+import Use_case.signup.SignupDataAccessInterface;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
@@ -13,7 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class DBUserAccessObject implements LoginDataAccessInterface {
+public class DBUserAccessObject implements LoginDataAccessInterface,
+        SignupDataAccessInterface {
     private final Map<String, User> allUsers = new HashMap<>();
 
     public DBUserAccessObject() {
@@ -28,6 +30,12 @@ public class DBUserAccessObject implements LoginDataAccessInterface {
         } catch (InterruptedException | ExecutionException e) {
             System.err.println("Error loading userInfo: " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean userExists(String username) {
+
+        return allUsers.containsKey(username);
     }
 
     @Override

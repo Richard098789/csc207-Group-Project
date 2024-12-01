@@ -1,7 +1,9 @@
 package entity.content;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +47,21 @@ public class Content implements ContentInterface {
     @Override
     public double getAverageRating() {
         return this.averageRating;
+    }
+
+    @Override
+    public List<Map<String, String>> getComments() {
+        List<Map<String, String>> comments = new ArrayList<>();
+        Map<String, String> comment = new HashMap<>();
+        for (String key : contentInfo.keySet()) {
+
+            if (contentInfo.get(key).get("comment") != null) {
+                comment.put(key, (String) contentInfo.get(key).get("comment"));
+                comments.add(comment);
+
+            }
+        }
+        return comments;
     }
 
     /**

@@ -1,9 +1,9 @@
 package entity.content;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ContentInterface {
-
 
     /**
      * Returns the Content ID.
@@ -21,4 +21,6 @@ public interface ContentInterface {
     void setAverageRating();
 
     double getAverageRating();
+
+    List<Map<String, String>> getComments();
 }

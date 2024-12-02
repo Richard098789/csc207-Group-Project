@@ -6,9 +6,9 @@ The **Music Artist and Event Management System** is a Java-based software projec
 
 ## Authors and Contributors
 This project was developed by the **CSC207 Software Design Team**:
-- **Abhigyan Dey**: Project Lead, Core Architecture Design
-- **Richard**: API Integration, GUI Development
-- **Nick**: Use Case Implementation
+- **Abhigyan**: GUI Development, API usage, documentation.
+- **Richard**: Database, API Search, and CLEAN Architecture Design
+- **Nick**: Use Case Implementation and architecture Design
 - **Chris**: Unit Testing and Documentation
 
 
@@ -58,7 +58,7 @@ This application is beneficial for:
 ### User Account Management
 - **Create Account**: Users can easily create a new account with secure credentials.
 - **Login System**: Existing users can log in to access personalized features and interact with the app.
-
+![img_1.png](img_1.png)
 ### Artist Search and Exploration
 - **Artist Listings**: Search for artists by name and explore their information.
 - **Dynamic Song Information**: View a curated list of the artist’s top songs, with details including song titles and length.
@@ -103,7 +103,7 @@ Before you begin, ensure you have the following installed on your system:
 4. **Firebase Admin SDK**: For managing database interactions. Ensure you have access to your Firebase project credentials file (`.json`).
 - Follow the [Firebase Admin Setup Guide](https://firebase.google.com/docs/admin/setup) to generate the credentials file.
 
-### Steps to Install
+### Steps to Install and Run
 
 1. **Clone the Repository**
 ```bash
@@ -111,5 +111,12 @@ git clone https://github.com/Richard098789/csc207-Group-Project.git
 cd <csc207-Group-Project>
 ```
 
-2. **Step 6: Run the Application**
+2.  **Step 2: Run the Application**
+
+To run the application, execute the main class located at:
+
+```plaintext
+src/main/java/app/App.java
+```
+
 

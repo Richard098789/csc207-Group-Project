@@ -3,12 +3,12 @@ package Use_case.artist_search;
 import entity.Artist;
 
 public class ArtistSearchInteractor implements ArtistSearchInputBoundary {
-    private final MusicBrainzArtistRepository repository;
-    private final ArtistSearchOutputBoundary outputBoundary;
+    private final ArtistSearchDataAccessInterface repository;
+    private final ArtistSearchOutputBoundary presenter;
 
-    public ArtistSearchInteractor(MusicBrainzArtistRepository repository, ArtistSearchOutputBoundary outputBoundary) {
+    public ArtistSearchInteractor(ArtistSearchDataAccessInterface repository, ArtistSearchOutputBoundary outputBoundary) {
         this.repository = repository;
-        this.outputBoundary = outputBoundary;
+        this.presenter = outputBoundary;
     }
 
     @Override
@@ -21,6 +21,6 @@ public class ArtistSearchInteractor implements ArtistSearchInputBoundary {
         );
 
         ArtistSearchOutputData outputData = new ArtistSearchOutputData(artists);
-        outputBoundary.presentResults(outputData);
+        presenter.presentResults(outputData);
     }
 }

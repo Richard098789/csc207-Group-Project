@@ -3,13 +3,18 @@ package interface_adapter.artist_search;
 import Use_case.artist_search.ArtistSearchOutputBoundary;
 import Use_case.artist_search.ArtistSearchOutputData;
 import entity.Artist;
+import view.ArtistListingView;
 
 public class ArtistSearchPresenter implements ArtistSearchOutputBoundary {
     private Artist[] results;
+    private final ArtistListingView artistListingView;
+    public ArtistSearchPresenter(ArtistListingView artistListingView) {
+        this.artistListingView = artistListingView;
+    }
 
     @Override
     public void presentResults(ArtistSearchOutputData outputData) {
-        // Store the results for access by the UI
+        artistListingView.presentResults(outputData.getArtists());
         this.results = outputData.getArtists();
     }
 

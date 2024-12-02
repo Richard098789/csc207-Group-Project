@@ -1,4 +1,4 @@
-package UI;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -10,12 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import Use_case.UserManager;
-import Controller.ArtistSearchController;
+import UI.EventListing;
 import Use_case.artist_search.ArtistSearchInteractor;
-import Use_case.artist_search.ArtistSearchPresenter;
-import Use_case.artist_search.MusicBrainzArtistRepository;
-import view.MainMenuView;
+import data_access.MusicBrainzArtistRepository;
 
 public class SearchSelection {
 
@@ -44,14 +41,8 @@ public class SearchSelection {
 
         frame.add(buttonPanel, BorderLayout.CENTER);
 
-        // Initialize dependencies for ArtistListing
-        MusicBrainzArtistRepository repository = new MusicBrainzArtistRepository();
-        ArtistSearchPresenter presenter = new ArtistSearchPresenter();
-        ArtistSearchInteractor interactor = new ArtistSearchInteractor(repository, presenter);
-        ArtistSearchController controller = new ArtistSearchController(interactor);
-
         // Listings button handlers
-        artistButton.addActionListener(e -> new ArtistListing(controller, presenter)); // Pass the required arguments
+        artistButton.addActionListener(e -> new ArtistListingView()); // Pass the required arguments
         eventButton.addActionListener(e -> new EventListing()); // Assuming EventListing requires no arguments for now
         mainMenuButton.addActionListener(e -> {
             // Close the current frame
@@ -59,8 +50,7 @@ public class SearchSelection {
 
             // Open the main menu page
 
-            new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
-
+            new MainMenuView();
 
         });
 

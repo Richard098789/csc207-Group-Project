@@ -1,4 +1,4 @@
-package use_case;
+package use_case.read_from_db;
 
 import Use_case.read_from_db.*;
 import data_transfer_object.Artist;

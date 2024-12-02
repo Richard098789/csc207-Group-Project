@@ -21,10 +21,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+
 import Use_case.artist_search.ArtistSearchInteractor;
 import Use_case.artist_search.MusicBrainzArtistRepository;
 import entity.Artist;
+
 import interface_adapter.artist_search.ArtistSearchController;
+
 
 public class ArtistListing {
     private JFrame frame;
@@ -41,11 +44,13 @@ public class ArtistListing {
     private String searchArtist = ""; // Search filter for artist name
     private String searchCountry = ""; // Search filter for country
     private String searchType = ""; // Search filter for type
+    private Firestore db;
 
     // Dependencies for the refactored architecture
     private ArtistSearchController artistSearchController;
 
     public ArtistListing() {
+
 
         frame = new JFrame("Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,6 +106,7 @@ public class ArtistListing {
     }
 
     private void fetchAndDisplayListings() {
+
         // Run the network call on a background thread
         new Thread(() -> {
             try {
@@ -138,6 +144,7 @@ public class ArtistListing {
                             loadMoreButton.setText("No More Results");
                             loadMoreButton.setEnabled(false);
                         }
+
                     }
                 });
             } catch (Exception e) {
@@ -147,10 +154,11 @@ public class ArtistListing {
                     listingPanel.add(errorLabel);
                 });
             }
-        }).start();
+
+
     }
 
-    private JPanel createArtistPanel(Artist artist) {
+    private JPanel createArtistPanel(Artist artist, Content content) {
         JPanel artistPanel = new JPanel();
         artistPanel.setLayout(new BorderLayout());
         artistPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
@@ -174,6 +182,7 @@ public class ArtistListing {
         // Add MouseListener to detect clicks and hover effects
         artistPanel.addMouseListener(new MouseAdapter() {
             @Override
+
             public void mouseClicked(MouseEvent evt) {
                 // Navigate to ArtistDetailView when clicked
                 new view.ArtistDetailView(artist); // Pass the artist object to the detail view
@@ -182,12 +191,15 @@ public class ArtistListing {
             @Override
             public void mouseEntered(MouseEvent evt) {
                 // Highlight the panel when hovered
+
                 artistPanel.setBackground(new Color(200, 220, 240)); // Slightly darker blue
             }
 
             @Override
+
             public void mouseExited(MouseEvent evt) {
                 // Reset the background color when mouse exits
+
                 artistPanel.setBackground(new Color(240, 248, 255)); // Reset to the original color
             }
         });

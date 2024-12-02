@@ -1,36 +1,68 @@
 package Use_case;
 
-import java.util.HashMap;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-
-import entity.Content;
-
 public class DBReader {
-    static final String PUBLIC_COLLECTION_NAME = "Public";
 
-    public static Content fromPublic(Firestore db, String collectionName, String documentId) {
+    // Method to read comments for a given artist from Firestore
+    public static List<Map<String, Object>> readComments(Firestore db, String artistId) {
+        List<Map<String, Object>> commentsList = new ArrayList<>();
+
         try {
-            DocumentSnapshot document = db.collection(collectionName).document(documentId).get().get();
-            Content content = new Content(documentId);
+            // Get the comments collection under the artist document
+            CollectionReference commentsCollection = db.collection("artists")
+                    .document(artistId)
+                    .collection("comments");
 
-            if (document.exists()) {
-                Map<String, Map<String, Object>> map = new HashMap<>();
-                for (String key : document.getData().keySet()) {
-                    Map<String, Object> value = (Map<String, Object>) document.getData().get(key);
-                    map.put(key, value);
-                }
-                content.setContent(map);
-                return content;
-            } else {
-                System.out.println("Document does not exist");
+            // Fetch the documents in the comments collection
+            ApiFuture<QuerySnapshot> future = commentsCollection.get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            // Add each document's data to the comments list
+            for (QueryDocumentSnapshot document : documents) {
+                commentsList.add(document.getData());
             }
+
         } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error reading document: " + e.getMessage());
+            System.err.println("Error reading comments: " + e.getMessage());
         }
-        return null;
+
+        return commentsList;
+    }
+
+    // Method to calculate average rating for an artist
+    public static double getAverageRating(Firestore db, String artistId) {
+        double totalRating = 0.0;
+        int count = 0;
+
+        try {
+            // Get the comments collection under the artist document
+            CollectionReference commentsCollection = db.collection("artists")
+                    .document(artistId)
+                    .collection("comments");
+
+            // Fetch the documents in the comments collection
+            ApiFuture<QuerySnapshot> future = commentsCollection.get();
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+
+            // Calculate the total rating and count the number of ratings
+            for (QueryDocumentSnapshot document : documents) {
+                if (document.contains("rating")) {
+                    totalRating += document.getDouble("rating");
+                    count++;
+                }
+            }
+
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error calculating average rating: " + e.getMessage());
+        }
+
+        // Calculate and return the average rating
+        return count > 0 ? Math.round((totalRating / count) * 10) / 10.0 : 0.0; // Rounded to one decimal place
     }
 }

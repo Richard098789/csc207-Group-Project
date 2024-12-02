@@ -58,7 +58,10 @@ public class SearchSelection {
             frame.dispose();
 
             // Open the main menu page
-            new MainMenuView(new UserManager()); // UserManager must be passed appropriately
+
+            new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
+
+
         });
 
         frame.setVisible(true);

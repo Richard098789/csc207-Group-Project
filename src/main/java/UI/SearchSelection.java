@@ -45,7 +45,8 @@ public class SearchSelection {
             frame.dispose();
 
             // Open the main menu page
-            new MainMenuView(); // Updated to match the no-argument constructor
+
+            new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
         });
 
         frame.setVisible(true);

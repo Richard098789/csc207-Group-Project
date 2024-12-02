@@ -1,10 +1,23 @@
 package view;
 
-import global_storage.CurrentUser;
+
+import Use_case.UserManager;
+import Use_case.login.LoginInputBoundary;
+import Use_case.login.LoginInteractor;
+import Use_case.login.LoginOutputBoundary;
+import app.AppCoordinator;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
+
+
+
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView {
+
+    private LoginController loginController;
+    private JFrame frame;
 
     public LoginView() {
         createAndShowGUI();
@@ -36,38 +49,43 @@ public class LoginView {
         // Login Button ActionListener
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
-            String password = new String(passwordField.getPassword());
 
-            if (authenticateUser(username, password)) {
-                JOptionPane.showMessageDialog(frame, "Login successful!");
-                CurrentUser.setCurrentUser(username);
-                frame.dispose();
-                new MainMenuView();
-            } else {
-                JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            String password = new String(passwordField.getPassword()).trim();
+            loginController.execute(username, password);
+
         });
 
         // Sign Up Button ActionListener
         signupButton.addActionListener(e -> {
-            frame.dispose();
-            new SignupView();
+
+            loginController.goSignupView();
+            frame.dispose(); // Close login window
+
         });
 
         frame.setVisible(true);
     }
 
-    private boolean authenticateUser(String username, String password) {
-        try {
-            var userDoc = CurrentUser.db.collection("Users")
-                    .document(username)
-                    .get()
-                    .get();
 
-            return userDoc.exists() && password.equals(userDoc.getString("password"));
-        } catch (Exception e) {
-            System.err.println("Error during authentication: " + e.getMessage());
-            return false;
-        }
+    public void toSignup() {
+        AppCoordinator coordinator = new AppCoordinator();
+        coordinator.createSignUpView();
     }
+
+
+    public void loginFailureView() {
+        JOptionPane.showMessageDialog(frame, "Invalid username or password!",
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void toMainMenuView() {
+        JOptionPane.showMessageDialog(frame, "Login successful!");
+        AppCoordinator coordinator = new AppCoordinator();
+        coordinator.createMainMenuView();
+
+    }
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;}
+
+
 }

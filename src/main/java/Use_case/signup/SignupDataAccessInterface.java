@@ -1,5 +1,8 @@
 package Use_case.signup;
 
+/**
+ * Signup Data Access Interface.
+ */
 public interface SignupDataAccessInterface {
 
     /**

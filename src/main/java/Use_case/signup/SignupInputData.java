@@ -1,5 +1,8 @@
 package Use_case.signup;
 
+/**
+ * Signup input data.
+ */
 public class SignupInputData {
     private final String username;
     private final String password;

@@ -2,7 +2,7 @@ package interface_adapter.event_search;
 
 import Use_case.event_search.EventSearchOutputBoundary;
 import Use_case.event_search.EventSearchOutputData;
-import entity.Event;
+import data_transfer_object.Event;
 
 public class EventSearchPresenter implements EventSearchOutputBoundary {
     private Event[] results;

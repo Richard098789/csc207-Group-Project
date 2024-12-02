@@ -1,14 +1,10 @@
 package view;
 
 import api.API_v2;
-import entity.Artist;
+import data_transfer_object.Artist;
 import entity.Content;
-import Controller.ArtistDetailController;
 import interface_adapter.artist_search.ArtistSearchController;
-import view.ArtistDetailView;
-import database.FireStoreInitializer;
 
-import com.google.cloud.firestore.Firestore;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -105,7 +101,7 @@ public class ArtistListingView {
                     // Filter by type if specified
                     if (searchType.equals("Any") || artist.getType().equalsIgnoreCase(searchType)) {
                         Content content = new Content(artist.getId());
-                        listingPanel.add(createArtistPanel(artist, content));
+                        listingPanel.add(createArtistPanel(artist));
                     }
                 }
 
@@ -155,8 +151,8 @@ public class ArtistListingView {
         artistPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ArtistDetailController controller = new ArtistDetailController(artist, content, db);
-                new ArtistDetailView(controller);
+//                ArtistDetailController controller = new ArtistDetailController(artist, content, db);
+//                new ArtistDetailView(controller);
             }
 
             @Override

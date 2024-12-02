@@ -1,6 +1,6 @@
 package Use_case.event_search;
 
-import entity.Event;
+import data_transfer_object.Event;
 
 public class EventSearchInteractor implements EventSearchInputBoundary {
     private final MusicBrainzEventRepository repository;

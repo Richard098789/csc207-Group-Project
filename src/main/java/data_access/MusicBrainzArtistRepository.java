@@ -1,7 +1,7 @@
 package data_access;
 
 import Use_case.artist_search.ArtistSearchDataAccessInterface;
-import entity.Artist;
+import data_transfer_object.Artist;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

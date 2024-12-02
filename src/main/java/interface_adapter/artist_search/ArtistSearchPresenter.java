@@ -2,7 +2,7 @@ package interface_adapter.artist_search;
 
 import Use_case.artist_search.ArtistSearchOutputBoundary;
 import Use_case.artist_search.ArtistSearchOutputData;
-import entity.Artist;
+import data_transfer_object.Artist;
 import view.ArtistListingView;
 
 public class ArtistSearchPresenter implements ArtistSearchOutputBoundary {

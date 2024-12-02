@@ -1,6 +1,6 @@
 package app;
 
-import view.ArtistListingView;
+import view.*;
 import Use_case.artist_search.ArtistSearchDataAccessInterface;
 import Use_case.artist_search.ArtistSearchInputBoundary;
 import Use_case.artist_search.ArtistSearchInteractor;
@@ -21,9 +21,6 @@ import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
-import view.LoginView;
-import view.MainMenuView;
-import view.SignupView;
 
 public class AppCoordinator {
     // use singleton pattern to save view info.
@@ -62,15 +59,18 @@ public class AppCoordinator {
         MainMenuView mainMenuView = new MainMenuView();
     }
 
-    public void createArtistSearchView() {
+    public void createArtistListingView() {
         ArtistListingView artistListingView = new ArtistListingView();
-        final ArtistSearchOutputBoundary artistSearchOutputBoundary = new ArtistSearchPresenter();
+        final ArtistSearchOutputBoundary artistSearchOutputBoundary = new ArtistSearchPresenter(artistListingView);
         final ArtistSearchDataAccessInterface artistSearchDataAccessInterface = new MusicBrainzArtistRepository();
         final ArtistSearchInputBoundary artistSearchInteractor = new ArtistSearchInteractor(
                 artistSearchDataAccessInterface, artistSearchOutputBoundary);
         final ArtistSearchController artistSearchController = new ArtistSearchController(artistSearchInteractor);
 
         artistListingView.setArtistSearchController(artistSearchController);
+    }
 
+    public void createSearchSelectionView() {
+        SearchSelection searchSelection = new SearchSelection();
     }
 }

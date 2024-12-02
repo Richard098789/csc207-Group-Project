@@ -1,6 +1,6 @@
 package Use_case.artist_search;
 
-import entity.Artist;
+import data_transfer_object.Artist;
 
 public class ArtistSearchInteractor implements ArtistSearchInputBoundary {
     private final ArtistSearchDataAccessInterface repository;

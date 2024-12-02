@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import entity.Event;
+import data_transfer_object.Event;
 
 
 public class EventDetailView {

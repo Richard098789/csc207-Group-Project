@@ -10,9 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import UI.EventListing;
-import Use_case.artist_search.ArtistSearchInteractor;
-import data_access.MusicBrainzArtistRepository;
+import app.AppCoordinator;
 
 public class SearchSelection {
 
@@ -40,17 +38,17 @@ public class SearchSelection {
         buttonPanel.add(mainMenuButton);
 
         frame.add(buttonPanel, BorderLayout.CENTER);
-
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
         // Listings button handlers
-        artistButton.addActionListener(e -> new ArtistListingView()); // Pass the required arguments
-        eventButton.addActionListener(e -> new EventListing()); // Assuming EventListing requires no arguments for now
+        artistButton.addActionListener(e -> appCoordinator.createArtistListingView()); // Pass the required arguments
+//        eventButton.addActionListener(e -> new EventListing()); // Assuming EventListing requires no arguments for now
         mainMenuButton.addActionListener(e -> {
             // Close the current frame
             frame.dispose();
 
             // Open the main menu page
 
-            new MainMenuView();
+            appCoordinator.createMainMenuView();
 
         });
 

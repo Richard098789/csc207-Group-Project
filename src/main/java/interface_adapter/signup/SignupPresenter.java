@@ -1,7 +1,6 @@
 package interface_adapter.signup;
 
 import Use_case.signup.SignupOutputBoundary;
-import app.AppCoordinator;
 import view.SignupView;
 
 public class SignupPresenter implements SignupOutputBoundary {

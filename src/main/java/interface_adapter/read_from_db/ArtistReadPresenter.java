@@ -18,7 +18,6 @@ public class ArtistReadPresenter implements ReadOutputBoundary {
     public void prepareArtistDetailedView(ReadOutputData readOutputData) {
 
         Map<String, String> comments = readOutputData.getComments();
-        System.out.println(comments+"in presenter");
         double averageRating = readOutputData.getAverageRating();
         artistListingView.createArtistDetailView(readOutputData.getRecording(),
                 comments, readOutputData.getArtist(), averageRating);

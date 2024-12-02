@@ -24,7 +24,6 @@ public class DBPublicAccessObject implements ReadDataAccessInterface,
             DocumentSnapshot document = db.collection("Public").document(documentID).get().get();
             // Fetch the documents in the comments collection
             if (document.exists()) {
-                System.out.println("Document: " + document.getData());
                 return document.getData();
 
             }

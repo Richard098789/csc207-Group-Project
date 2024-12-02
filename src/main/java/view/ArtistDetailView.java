@@ -39,7 +39,6 @@ public class ArtistDetailView {
         // User Input Panel (Rating and Comment)
         JPanel userInputPanel = createUserInputPanel(detailsPanel, artist);
         frame.add(userInputPanel, BorderLayout.SOUTH);
-        System.out.println(comments+"berfore load comments");
         // Load existing comments
         loadComments(comments);
 
@@ -140,9 +139,7 @@ public class ArtistDetailView {
         commentsPanel.setBorder(BorderFactory.createTitledBorder("Comments"));
 
         if (!comments.isEmpty()) {
-            System.out.println(comments+"inside load comments");
             for (String key : comments.keySet()) {
-                System.out.println(comments.get("Richard1"));
                 String username = key;
                 String text = comments.get(key);
                 JLabel commentLabelItem = new JLabel("<html><b>" + username + ":</b> " + text + "</html>");

@@ -3,18 +3,14 @@ package data_access;
 import Use_case.read_from_db.ReadDataAccessInterface;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
-import database.FireStoreInitializer;
+import global_storage.CurrentUser;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class DBPublicAccessObject implements ReadDataAccessInterface {
 
-    private Firestore db;
-
-    public DBPublicAccessObject() {
-        this.db = FireStoreInitializer.initializeFirestore();
-    }
+    private Firestore db = CurrentUser.db;
 
     @Override
     public Map<String, Object> readContents(String documentID) {

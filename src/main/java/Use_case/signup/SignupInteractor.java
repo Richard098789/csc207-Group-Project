@@ -6,9 +6,9 @@ public class SignupInteractor implements SignupInputBoundary{
     private final SignupOutputBoundary userPresenter;
 
     public SignupInteractor(SignupDataAccessInterface signupDataAccessInterface,
-                            SignupOutputBoundary signupOutputBoundary) {
+                            SignupOutputBoundary userPresenter) {
         this.userDataAccessObject = signupDataAccessInterface;
-        this.userPresenter = signupOutputBoundary;
+        this.userPresenter = userPresenter;
     }
 
     @Override

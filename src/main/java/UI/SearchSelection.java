@@ -3,14 +3,11 @@ package UI;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-import Use_case.UserManager;
 import view.MainMenuView;
 
 public class SearchSelection {
@@ -48,8 +45,8 @@ public class SearchSelection {
             frame.dispose();
 
             // Open the main menu page
-            new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
 
+            new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
         });
 
         frame.setVisible(true);
@@ -58,5 +55,4 @@ public class SearchSelection {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SearchSelection::new);
     }
-
 }

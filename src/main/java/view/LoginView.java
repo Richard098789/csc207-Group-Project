@@ -1,5 +1,6 @@
 package view;
 
+
 import Use_case.UserManager;
 import Use_case.login.LoginInputBoundary;
 import Use_case.login.LoginInteractor;
@@ -8,10 +9,13 @@ import app.AppCoordinator;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 
+
+
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView {
+
     private LoginController loginController;
     private JFrame frame;
 
@@ -45,12 +49,15 @@ public class LoginView {
         // Login Button ActionListener
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
+
             String password = new String(passwordField.getPassword()).trim();
             loginController.execute(username, password);
+
         });
 
-        // Sign-Up Button ActionListener
+        // Sign Up Button ActionListener
         signupButton.addActionListener(e -> {
+
             loginController.goSignupView();
             frame.dispose(); // Close login window
 
@@ -58,6 +65,7 @@ public class LoginView {
 
         frame.setVisible(true);
     }
+
 
     public void toSignup() {
         AppCoordinator coordinator = new AppCoordinator();
@@ -74,11 +82,10 @@ public class LoginView {
         JOptionPane.showMessageDialog(frame, "Login successful!");
         AppCoordinator coordinator = new AppCoordinator();
         coordinator.createMainMenuView();
+
     }
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;}
-
-
 
 
 }

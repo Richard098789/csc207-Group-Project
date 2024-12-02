@@ -1,5 +1,6 @@
 package view;
 
+
 import app.AppCoordinator;
 import interface_adapter.signup.SignupController;
 
@@ -9,6 +10,7 @@ import java.awt.*;
 public class SignupView {
     private SignupController signupController;
     private JFrame frame;
+
 
     public SignupView() {
         JFrame frame = new JFrame("Sign-Up Page");
@@ -41,18 +43,22 @@ public class SignupView {
 
         // Create Account Button ActionListener
         createAccountButton.addActionListener(e -> {
-            String username = usernameField.getText();
+            String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
             String confirmPassword = new String(confirmPasswordField.getPassword());
 
+
             signupController.execute(username, password, confirmPassword);
+
 
         });
 
         // Back Button ActionListener
         backButton.addActionListener(e -> {
+
             frame.dispose(); // Close the sign-up window
             signupController.switchToLoginView(); // Return to LoginView
+
         });
     }
 
@@ -76,4 +82,5 @@ public class SignupView {
     public void passwordUnmatched() {
         JOptionPane.showMessageDialog(frame, "Password is unmatched");
     }
+
 }

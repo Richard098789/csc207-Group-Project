@@ -30,7 +30,6 @@ public class MusicBrainzEventRepository implements EventSearchDataAccessInterfac
         queryBuilder.append(String.format("&%s&limit=%d&offset=%d", FORMAT, limit, offset));
 
         try {
-            System.out.println("API Request URL: " + queryBuilder.toString());
 
             Request request = new Request.Builder()
                     .url(queryBuilder.toString())
@@ -39,7 +38,6 @@ public class MusicBrainzEventRepository implements EventSearchDataAccessInterfac
 
             Response response = client.newCall(request).execute();
             String responseBodyString = response.body().string();
-            System.out.println("API Response Body: " + responseBodyString);
 
             JSONObject responseBody = new JSONObject(responseBodyString);
 

@@ -1,6 +1,5 @@
 package data_transfer_object;
 
-import java.util.List;
 
 /**
  * This class represents a recording with details such as artist names,
@@ -9,29 +8,13 @@ import java.util.List;
 public class Recording {
 
     private final String id;
-    private  String title;
-    private  int length;
+    private final String title;
+    private final int length;
 
     private Recording(Builder builder) {
         this.id = builder.id;
         this.title = builder.title;
         this.length = builder.length;
-    }
-
-
-    private  String songName;
-    private  List<String> artistNames;
-    private  String country;
-    private  String releaseDate;
-    private  String releaseGroupType;
-
-    public Recording(String id, String songName, List<String> artistNames, String country, String releaseDate, String releaseGroupType) {
-        this.id = id;
-        this.songName = songName;
-        this.artistNames = artistNames;
-        this.country = country;
-        this.releaseDate = releaseDate;
-        this.releaseGroupType = releaseGroupType;
     }
 
     /**
@@ -46,10 +29,6 @@ public class Recording {
 
     public String getTitle() {
         return title;
-    }
-
-    public int getLength() {
-        return length;
     }
 
     public String getFormattedLength() {
@@ -88,9 +67,6 @@ public class Recording {
         public Recording build() {
             return new Recording(this);
 
-            /**
-             * Represents a builder for creating instances of a Recording.
-             */
         }
     }
 }

@@ -1,11 +1,10 @@
 package Use_case.login;
 
-
 import global_storage.CurrentUser;
-import view.MainMenuView;
 
-import javax.swing.*;
-
+/**
+ * Login interactor.
+ */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginDataAccessInterface loginDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
@@ -21,9 +20,12 @@ public class LoginInteractor implements LoginInputBoundary {
         final String username = loginInputData.getUsername();
         final String password = loginInputData.getPassword();
         if (loginDataAccessObject.validateLogin(username, password)) {
-            CurrentUser.username = username; // Set the current user after successful login
+            // Set the current user after successful login
+            CurrentUser.username = username;
             loginPresenter.prepareMainMenuView();
-        } else {
+        }
+
+        else {
             loginPresenter.prepareFailView();
         }
     }
@@ -32,6 +34,5 @@ public class LoginInteractor implements LoginInputBoundary {
     public void goSignupView() {
         loginPresenter.goSignupView();
     }
-
 
 }

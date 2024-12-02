@@ -1,7 +1,9 @@
 package entity.content;
 
-public class ContentFactory implements ContentFactoryInterface{
-
+/**
+ * The content factory class.
+ */
+public class ContentFactory implements ContentFactoryInterface {
 
     @Override
     public Content create(String contentId) {

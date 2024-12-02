@@ -2,6 +2,9 @@ package Use_case.artist_search;
 
 import data_transfer_object.Artist;
 
+/**
+ * Artist Search Output data.
+ */
 public class ArtistSearchOutputData {
     private final Artist[] artists;
 

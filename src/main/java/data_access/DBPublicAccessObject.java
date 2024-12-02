@@ -1,5 +1,8 @@
 package data_access;
 
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
 import Use_case.read_from_db.ReadDataAccessInterface;
 import Use_case.writer.WriterDataAccessInterface;
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -8,12 +11,16 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.firestore.SetOptions;
 import global_storage.CurrentUser;
 
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
+/**
+ * The data access object of public information.
+ */
 public class DBPublicAccessObject implements ReadDataAccessInterface,
         WriterDataAccessInterface {
+
 
     private final Firestore db = CurrentUser.db;
 
@@ -21,7 +28,7 @@ public class DBPublicAccessObject implements ReadDataAccessInterface,
     public Map<String, Object> readContents(String documentID) {
         try {
             // Get the comments collection under the artist document
-            DocumentSnapshot document = db.collection("Public").document(documentID).get().get();
+            final DocumentSnapshot document = db.collection("Public").document(documentID).get().get();
             // Fetch the documents in the comments collection
             if (document.exists()) {
                 return document.getData();
@@ -29,8 +36,8 @@ public class DBPublicAccessObject implements ReadDataAccessInterface,
             }
 
         }
-        catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error reading document: " + e.getMessage());
+        catch (InterruptedException | ExecutionException ex) {
+            System.err.println("Error reading document: " + ex.getMessage());
         }
         return null;
     }

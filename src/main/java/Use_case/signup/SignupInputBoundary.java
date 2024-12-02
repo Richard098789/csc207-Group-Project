@@ -1,5 +1,8 @@
 package Use_case.signup;
 
+/**
+ * Signup input boundary.
+ */
 public interface SignupInputBoundary {
 
     /**

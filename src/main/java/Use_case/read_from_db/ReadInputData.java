@@ -2,6 +2,9 @@ package Use_case.read_from_db;
 
 import data_transfer_object.Artist;
 
+/**
+ * Read input data.
+ */
 public class ReadInputData {
 
     private final String documentID;
@@ -12,7 +15,11 @@ public class ReadInputData {
         this.documentID = documentID;
     }
 
-    String getDocumentID() {return documentID;}
+    String getDocumentID() {
+        return documentID;
+    }
 
-    Artist getArtist() {return artist;}
+    Artist getArtist() {
+        return artist;
+    }
 }

@@ -1,5 +1,8 @@
 package entity.content;
 
+/**
+ * The interface for the content factory.
+ */
 public interface ContentFactoryInterface {
     /**
      * Creates a new User.

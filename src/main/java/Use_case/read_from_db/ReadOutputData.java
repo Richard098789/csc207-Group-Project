@@ -1,11 +1,14 @@
 package Use_case.read_from_db;
 
-import data_transfer_object.Artist;
-import data_transfer_object.Recording;
-
 import java.util.List;
 import java.util.Map;
 
+import data_transfer_object.Artist;
+import data_transfer_object.Recording;
+
+/**
+ * Read output data.
+ */
 public class ReadOutputData {
 
     private Map<String, String> comments;
@@ -15,6 +18,7 @@ public class ReadOutputData {
     private Recording[] recording;
 
     public ReadOutputData(Recording[] topSongs, Map<String, String> comments, double averageRating, Artist artist) {
+
         this.comments = comments;
         this.averageRating = averageRating;
         this.artist = artist;

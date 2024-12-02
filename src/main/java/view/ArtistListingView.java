@@ -4,7 +4,7 @@ import api.API_v2;
 import app.AppCoordinator;
 import data_transfer_object.Artist;
 import data_transfer_object.Recording;
-import entity.Content;
+import entity.content.Content;
 import interface_adapter.artist_search.ArtistSearchController;
 import interface_adapter.read_from_db.ReadController;
 

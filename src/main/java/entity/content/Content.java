@@ -30,17 +30,8 @@ public class Content implements ContentInterface {
     }
 
     @Override
-    public Map<String, Map<String, Object>> getContentInfo() {
-        return contentInfo;
-    }
-
-    @Override
     public void setContentInfo(Map<String, Map<String, Object>> content) {
-        this.averageRating = averageRating;
-    }
-
-    @Override
-    public void setAverageRating() {
+        this.contentInfo = content;
         this.averageRating = getRating();
     }
 
@@ -54,11 +45,9 @@ public class Content implements ContentInterface {
         List<Map<String, String>> comments = new ArrayList<>();
         Map<String, String> comment = new HashMap<>();
         for (String key : contentInfo.keySet()) {
-
             if (contentInfo.get(key).get("comment") != null) {
                 comment.put(key, (String) contentInfo.get(key).get("comment"));
                 comments.add(comment);
-
             }
         }
         return comments;

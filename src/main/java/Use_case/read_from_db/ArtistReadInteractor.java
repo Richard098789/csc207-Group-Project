@@ -43,6 +43,7 @@ public class ArtistReadInteractor implements ReadInputBoundary {
             averageRating = content.getAverageRating();
         }
         Recording[] topSongs = readSongDataAccessObject.readTopSongs(documentID);
+        System.out.println(comments);
         final ReadOutputData readOutputData = new ReadOutputData(topSongs, comments, averageRating, readInputData.getArtist());
         readPresenter.prepareArtistDetailedView(readOutputData);
 

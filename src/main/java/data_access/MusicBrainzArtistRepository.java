@@ -1,14 +1,17 @@
-package api;
+package data_access;
 
+import Use_case.artist_search.ArtistSearchDataAccessInterface;
 import data_transfer_object.Artist;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.UUID;
 
-public class API_v2 {
+public class MusicBrainzArtistRepository implements ArtistSearchDataAccessInterface {
+
     private static final String BASE_URL = "https://musicbrainz.org/ws/2";
     private static final String FORMAT = "fmt=json";
 

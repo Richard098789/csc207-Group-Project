@@ -1,4 +1,4 @@
-package entity;
+package data_transfer_object;
 
 import java.util.UUID;
 

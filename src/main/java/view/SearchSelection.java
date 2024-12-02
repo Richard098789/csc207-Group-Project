@@ -1,4 +1,4 @@
-package UI;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -10,8 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import Use_case.UserManager;
-import view.MainMenuView;
+import app.AppCoordinator;
 
 public class SearchSelection {
 
@@ -39,16 +38,17 @@ public class SearchSelection {
         buttonPanel.add(mainMenuButton);
 
         frame.add(buttonPanel, BorderLayout.CENTER);
-
-        // Listings button handler
-        artistButton.addActionListener(e -> new ArtistListing());
-        eventButton.addActionListener(e -> new EventListing());
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
+        // Listings button handlers
+        artistButton.addActionListener(e -> appCoordinator.createArtistListingView()); // Pass the required arguments
+//        eventButton.addActionListener(e -> new EventListing()); // Assuming EventListing requires no arguments for now
         mainMenuButton.addActionListener(e -> {
             // Close the current frame
             frame.dispose();
 
             // Open the main menu page
-            new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
+
+            appCoordinator.createMainMenuView();
 
         });
 

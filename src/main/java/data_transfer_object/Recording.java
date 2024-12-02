@@ -1,10 +1,16 @@
+package data_transfer_object;
 
-package entity;
+import java.util.List;
 
+/**
+ * This class represents a recording with details such as artist names,
+ * song name, country, release date, and release group type.
+ */
 public class Recording {
+
     private final String id;
-    private final String title;
-    private final int length;
+    private  String title;
+    private  int length;
 
     private Recording(Builder builder) {
         this.id = builder.id;
@@ -12,9 +18,31 @@ public class Recording {
         this.length = builder.length;
     }
 
+
+    private  String songName;
+    private  List<String> artistNames;
+    private  String country;
+    private  String releaseDate;
+    private  String releaseGroupType;
+
+    public Recording(String id, String songName, List<String> artistNames, String country, String releaseDate, String releaseGroupType) {
+        this.id = id;
+        this.songName = songName;
+        this.artistNames = artistNames;
+        this.country = country;
+        this.releaseDate = releaseDate;
+        this.releaseGroupType = releaseGroupType;
+    }
+
+    /**
+     * Returns the recording ID.
+     * @return the recording ID.
+     */
+
     public String getId() {
         return id;
     }
+
 
     public String getTitle() {
         return title;
@@ -59,6 +87,10 @@ public class Recording {
 
         public Recording build() {
             return new Recording(this);
+
+            /**
+             * Represents a builder for creating instances of a Recording.
+             */
         }
     }
 }

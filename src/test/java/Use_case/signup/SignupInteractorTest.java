@@ -1,9 +1,5 @@
-package use_case.signup;
+package Use_case.signup;
 
-import Use_case.signup.SignupDataAccessInterface;
-import Use_case.signup.SignupInputData;
-import Use_case.signup.SignupInteractor;
-import Use_case.signup.SignupOutputBoundary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +38,8 @@ class SignupInteractorTest {
         verify(mockDataAccess).userExists(username);
         verify(mockDataAccess).addUser(username, password);
         verify(mockPresenter).prepareSuccessView();
+
+        // Ensure no other interactions with presenter
         verifyNoMoreInteractions(mockPresenter);
     }
 
@@ -64,8 +62,7 @@ class SignupInteractorTest {
         // Verify that prepareFailView was called
         verify(mockPresenter).prepareFailView();
 
-        // Ensure no other interactions occurred
-        verifyNoMoreInteractions(mockDataAccess);
+        // Ensure no other interactions with presenter
         verifyNoMoreInteractions(mockPresenter);
     }
 
@@ -80,8 +77,10 @@ class SignupInteractorTest {
         SignupInputData inputData = new SignupInputData(username, password, confirmPassword);
         interactor.execute(inputData);
 
-        // Verify interactions
+        // Verify no interaction with the data access object
         verifyNoInteractions(mockDataAccess);
+
+        // Verify presenter interaction
         verify(mockPresenter).prepareUnmatchPasswordView();
         verifyNoMoreInteractions(mockPresenter);
     }

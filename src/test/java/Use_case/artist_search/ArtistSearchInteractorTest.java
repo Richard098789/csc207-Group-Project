@@ -1,9 +1,5 @@
-package use_case.artist_search;
+package Use_case.artist_search;
 
-import Use_case.artist_search.ArtistSearchDataAccessInterface;
-import Use_case.artist_search.ArtistSearchInputData;
-import Use_case.artist_search.ArtistSearchInteractor;
-import Use_case.artist_search.ArtistSearchOutputBoundary;
 import data_transfer_object.Artist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -7,11 +7,10 @@ import interface_adapter.writer.WriterController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 public class ArtistDetailView {
-    private JFrame frame;
+    final JFrame frame;
     private JPanel commentsPanel;  // Keeping reference for updating comments
     private JScrollPane commentsScrollPane;  // ScrollPane reference for comments
     private WriterController writeController;
@@ -118,10 +117,18 @@ public class ArtistDetailView {
             } else {
                 writeController.execute(artist.getId(), CurrentUser.username, comment, rating);
 
+                // Dynamically add the new comment to the comments panel
+                JLabel newCommentLabel = new JLabel("<html><b>" + CurrentUser.username + ":</b> " + comment + "</html>");
+                newCommentLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                commentsPanel.add(newCommentLabel);
+
+                // Refresh the comments panel to display the new comment
+                commentsPanel.revalidate();
+                commentsPanel.repaint();
+
                 // Clear fields
                 ratingDropdown.setSelectedIndex(0);
                 commentBox.setText("");
-
             }
         });
         userInputPanel.add(addButton);
@@ -140,9 +147,8 @@ public class ArtistDetailView {
 
         if (!comments.isEmpty()) {
             for (String key : comments.keySet()) {
-                String username = key;
                 String text = comments.get(key);
-                JLabel commentLabelItem = new JLabel("<html><b>" + username + ":</b> " + text + "</html>");
+                JLabel commentLabelItem = new JLabel("<html><b>" + key + ":</b> " + text + "</html>");
                 commentLabelItem.setFont(new Font("Arial", Font.PLAIN, 14));
                 commentsPanel.add(commentLabelItem);
             }

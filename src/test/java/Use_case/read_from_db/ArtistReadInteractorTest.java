@@ -1,6 +1,5 @@
-package use_case.read_from_db;
+package Use_case.read_from_db;
 
-import Use_case.read_from_db.*;
 import data_transfer_object.Artist;
 import data_transfer_object.Recording;
 import org.junit.jupiter.api.BeforeEach;

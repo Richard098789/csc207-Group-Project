@@ -1,10 +1,5 @@
-package use_case.event_search;
+package Use_case.event_search;
 
-
-import Use_case.event_search.EventSearchDataAccessInterface;
-import Use_case.event_search.EventSearchInputData;
-import Use_case.event_search.EventSearchInteractor;
-import Use_case.event_search.EventSearchOutputBoundary;
 
 import data_transfer_object.Event;
 import org.junit.jupiter.api.BeforeEach;

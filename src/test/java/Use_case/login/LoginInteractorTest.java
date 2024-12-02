@@ -1,9 +1,5 @@
-package use_case.login;
+package Use_case.login;
 
-import Use_case.login.LoginDataAccessInterface;
-import Use_case.login.LoginInputData;
-import Use_case.login.LoginInteractor;
-import Use_case.login.LoginOutputBoundary;
 import global_storage.CurrentUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

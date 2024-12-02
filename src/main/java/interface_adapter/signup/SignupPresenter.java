@@ -27,7 +27,7 @@ public class SignupPresenter implements SignupOutputBoundary {
 
     @Override
     public void switchToLoginView() {
-        AppCoordinator appCoordinator = new AppCoordinator();
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
         appCoordinator.createLoginView();
     }
 }

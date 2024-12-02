@@ -18,6 +18,16 @@ import view.MainMenuView;
 import view.SignupView;
 
 public class AppCoordinator {
+    // use singleton pattern to save view info.
+    private static AppCoordinator instance;
+    private AppCoordinator() {}
+
+    public static AppCoordinator getInstance() {
+        if (instance == null) {
+            instance = new AppCoordinator();
+        }
+        return instance;
+    }
     public void createLoginView() {
         LoginView loginView = new LoginView();
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginView);

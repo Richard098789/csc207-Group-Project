@@ -60,7 +60,7 @@ public class LoginView {
     }
 
     public void toSignup() {
-        AppCoordinator coordinator = new AppCoordinator();
+        AppCoordinator coordinator = AppCoordinator.getInstance();
         coordinator.createSignUpView();
     }
 
@@ -72,7 +72,7 @@ public class LoginView {
 
     public void toMainMenuView() {
         JOptionPane.showMessageDialog(frame, "Login successful!");
-        AppCoordinator coordinator = new AppCoordinator();
+        AppCoordinator coordinator = AppCoordinator.getInstance();
         coordinator.createMainMenuView();
     }
     public void setLoginController(LoginController loginController) {

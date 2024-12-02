@@ -17,9 +17,17 @@ import view.LoginView;
 import view.MainMenuView;
 import view.SignupView;
 
+/**
+ * Class for coordinating the app.
+ */
+
 public class AppCoordinator {
+
+    /**
+     * Create the login view of the program.
+     */
     public void createLoginView() {
-        LoginView loginView = new LoginView();
+        final LoginView loginView = new LoginView();
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginView);
         final LoginDataAccessInterface loginDataAccessInterface = new DBUserAccessObject();
         final LoginInputBoundary loginInteractor = new LoginInteractor(
@@ -29,8 +37,11 @@ public class AppCoordinator {
         loginView.setLoginController(loginController);
     }
 
+    /**
+     * Create the sign up view of the program.
+     */
     public void createSignUpView() {
-        SignupView signupView = new SignupView();
+        final SignupView signupView = new SignupView();
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(signupView);
         final SignupDataAccessInterface signupDataAccessInterface = new DBUserAccessObject();
         final SignupInputBoundary signupInteractor = new SignupInteractor(
@@ -40,7 +51,10 @@ public class AppCoordinator {
         signupView.setSignupController(signupController);
     }
 
+    /**
+     * Create the main menu view of the program.
+     */
     public void createMainMenuView() {
-        MainMenuView mainMenuView = new MainMenuView();
+        final MainMenuView mainMenuView = new MainMenuView();
     }
 }

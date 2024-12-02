@@ -1,7 +1,19 @@
 package app;
 
-import java.util.List;
-import java.util.Map;
+
+import Use_case.read_from_db.*;
+import Use_case.writer.WriterDataAccessInterface;
+import Use_case.writer.WriterInputBoundary;
+import Use_case.writer.WriterInteractor;
+import Use_case.writer.WriterOutputBoundary;
+import data_access.DBPublicAccessObject;
+import data_transfer_object.Artist;
+import data_transfer_object.Recording;
+import interface_adapter.read_from_db.ArtistReadPresenter;
+import interface_adapter.read_from_db.ReadController;
+import interface_adapter.writer.WriterController;
+import interface_adapter.writer.WriterPresenter;
+import view.*;
 
 import Use_case.artist_search.ArtistSearchDataAccessInterface;
 import Use_case.artist_search.ArtistSearchInputBoundary;
@@ -119,11 +131,19 @@ public final class AppCoordinator {
      * @param averageRating the average rating
      */
     public void createArtistDetailView(Recording[] topSongs,
-                                       List<Map<String, String>> comments, Artist artist,
+                                       Map<String, String> comments, Artist artist,
                                        Double averageRating) {
-        final ArtistDetailView artistDetailView = new ArtistDetailView(topSongs, comments, artist, averageRating);
-    }
 
+        ArtistDetailView artistDetailView = new ArtistDetailView(topSongs, comments, artist, averageRating);
+        final WriterOutputBoundary writerPresenter = new WriterPresenter(artistDetailView);
+        final WriterDataAccessInterface writerDataAccessInterface = new DBPublicAccessObject();
+        final WriterInputBoundary writerInteractor = new WriterInteractor(
+                writerDataAccessInterface, writerPresenter);
+        final WriterController writerController = new WriterController(writerInteractor);
+
+        artistDetailView.setWriterController(writerController);
+    }
+  
     /**
      * Create the search selection view.
      */
@@ -131,3 +151,5 @@ public final class AppCoordinator {
         final SearchSelection searchSelection = new SearchSelection();
     }
 }
+
+

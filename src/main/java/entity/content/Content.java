@@ -1,8 +1,8 @@
 package entity.content;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 /**
@@ -21,11 +21,6 @@ public class Content implements ContentInterface {
         this.contentId = contentId;
         this.contentInfo = new HashMap<>();
         this.averageRating = 0.0;
-    }
-
-    @Override
-    public String getContentID() {
-        return contentId;
     }
 
     @Override
@@ -60,7 +55,7 @@ public class Content implements ContentInterface {
      */
     private double getRating() {
         double rating = 0.0;
-        if (this.contentInfo.size() > 0) {
+        if (!this.contentInfo.isEmpty()) {
             for (Map<String, Object> value : contentInfo.values()) {
                 rating += (double) value.get("rating");
             }

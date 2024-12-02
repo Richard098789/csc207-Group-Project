@@ -5,7 +5,7 @@ import Use_case.read_from_db.ReadInputData;
 import data_transfer_object.Artist;
 
 public class ReadController {
-    private ReadInputBoundary readInteractor;
+    private final ReadInputBoundary readInteractor;
 
     public ReadController(ReadInputBoundary readInteractor) {
         this.readInteractor = readInteractor;

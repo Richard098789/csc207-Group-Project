@@ -1,10 +1,8 @@
 package view;
 
-import api.API_v2;
 import app.AppCoordinator;
 import data_transfer_object.Artist;
 import data_transfer_object.Recording;
-import entity.content.Content;
 import interface_adapter.artist_search.ArtistSearchController;
 import interface_adapter.read_from_db.ReadController;
 
@@ -12,18 +10,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.util.Map;
 
 public class ArtistListingView {
-    private JFrame frame;
-    private JPanel listingPanel;
-    private JScrollPane scrollPane;
-    private JButton loadMoreButton;
-    private JTextField searchField;
-    private JTextField countryField;
-    private JComboBox<String> typeDropdown;
-    private JButton searchButton;
+    private final JPanel listingPanel;
+    private final JButton loadMoreButton;
+    private final JTextField searchField;
+    private final JTextField countryField;
+    private final JComboBox<String> typeDropdown;
     private int offset = 0; // Start point for pagination
     private final int LIMIT = 10; // Number of results per request
     private boolean hasMore = true; // Flag to indicate if there are more results
@@ -35,7 +29,7 @@ public class ArtistListingView {
 
     public ArtistListingView() {
 
-        frame = new JFrame("Music Listings");
+        JFrame frame = new JFrame("Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 900);
         frame.setLayout(new BorderLayout());
@@ -54,7 +48,7 @@ public class ArtistListingView {
         String[] types = {"Any", "Group", "Person", "Other"};
         typeDropdown = new JComboBox<>(types);
 
-        searchButton = new JButton("Search");
+        JButton searchButton = new JButton("Search");
         searchButton.addActionListener(new SearchListener());
 
         searchPanel.add(new JLabel("Artist:"));
@@ -72,7 +66,7 @@ public class ArtistListingView {
         listingPanel.setBackground(Color.WHITE);
 
         // Scroll pane for the listing panel
-        scrollPane = new JScrollPane(listingPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollPane = new JScrollPane(listingPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Smooth scrolling
         frame.add(scrollPane, BorderLayout.CENTER);
 
@@ -83,53 +77,9 @@ public class ArtistListingView {
         frame.add(loadMoreButton, BorderLayout.SOUTH);
 
         // Fetch and display the first set of results
-        fetchAndDisplayListings();
+        // fetchAndDisplayListings();
 
         frame.setVisible(true);
-    }
-
-    private void fetchAndDisplayListings() {
-        API_v2 api = new API_v2();
-
-        try {
-            // Fetch paginated artist data using correct parameters
-            Artist[] artists = api.getArtists(searchArtist, searchCountry, LIMIT, offset);
-
-            if (artists.length == 0 && offset == 0) {
-                JLabel noDataLabel = new JLabel("No artists found!");
-                noDataLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-                listingPanel.add(noDataLabel);
-                hasMore = false;
-                loadMoreButton.setEnabled(false);
-            } else {
-                // Display paginated results
-                for (Artist artist : artists) {
-                    // Filter by type if specified
-                    if (searchType.equals("Any") || artist.getType().equalsIgnoreCase(searchType)) {
-                        Content content = new Content(artist.getId());
-                        listingPanel.add(createArtistPanel(artist));
-                    }
-                }
-
-                offset += LIMIT;
-
-                // Refresh UI components
-                listingPanel.revalidate();
-                listingPanel.repaint();
-
-                if (artists.length < LIMIT) {
-                    hasMore = false;
-                    loadMoreButton.setText("No More Results");
-                    loadMoreButton.setEnabled(false);
-                }
-            }
-        } catch (Exception e) {
-            JLabel errorLabel = new JLabel("Error fetching artists: " + e.getMessage());
-            errorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-            listingPanel.add(errorLabel);
-            listingPanel.revalidate();
-            listingPanel.repaint();
-        }
     }
 
     private JPanel createArtistPanel(Artist artist) {
@@ -187,7 +137,6 @@ public class ArtistListingView {
                 for (Artist artist : artists) {
                     // Filter by type if specified
                     if (searchType.equals("Any") || artist.getType().equalsIgnoreCase(searchType)) {
-                        Content content = new Content(artist.getId());
                         listingPanel.add(createArtistPanel(artist));
                     }
                 }
@@ -217,7 +166,7 @@ public class ArtistListingView {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (hasMore) {
-                fetchAndDisplayListings();
+                artistSearchController.searchArtists(searchArtist, searchCountry, LIMIT, offset);
             }
         }
     }

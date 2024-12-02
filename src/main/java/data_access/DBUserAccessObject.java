@@ -10,7 +10,6 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.SetOptions;
-import com.google.cloud.firestore.WriteResult;
 import entity.User;
 import global_storage.CurrentUser;
 
@@ -44,11 +43,11 @@ public class DBUserAccessObject implements LoginDataAccessInterface,
     }
 
     @Override
-    public boolean addUser(String username, String password) {
+    public void addUser(String username, String password) {
         try {
             if (allUsers.containsKey(username)) {
                 // Username already exists
-                return false;
+                return;
             }
             final User newUser = new User(username, password);
 
@@ -58,15 +57,13 @@ public class DBUserAccessObject implements LoginDataAccessInterface,
             final Map<String, String> data = newUser.getSignInInfo();
 
             // SetOption to merge so that it would not override previous data.
-            final WriteResult result = CurrentUser.db.collection("Users")
+            CurrentUser.db.collection("Users")
                     .document(username).set(data, SetOptions.merge()).get();
-            return true;
 
         }
 
         catch (InterruptedException | ExecutionException ex) {
             System.err.println("Error writing document: " + ex.getMessage());
-            return false;
         }
     }
 

@@ -3,11 +3,9 @@ package interface_adapter.login;
 
 import Use_case.login.LoginOutputBoundary;
 import view.LoginView;
-import view.MainMenuView;
-import view.SignupView;
 
 public class LoginPresenter implements LoginOutputBoundary {
-    private LoginView view;
+    private final LoginView view;
 
     public LoginPresenter(LoginView view) {
         this.view = view;

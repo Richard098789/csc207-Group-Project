@@ -1,12 +1,7 @@
 package view;
 
-import Use_case.UserManager;
-import Use_case.login.LoginInputBoundary;
-import Use_case.login.LoginInteractor;
-import Use_case.login.LoginOutputBoundary;
 import app.AppCoordinator;
 import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +15,7 @@ public class LoginView {
     }
 
     private void createAndShowGUI() {
-        JFrame frame = new JFrame("Login Page");
+        frame = new JFrame("Login Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
 

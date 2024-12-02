@@ -33,7 +33,6 @@ public class FireStoreInitializer {
         }
 
         catch (Exception ex) {
-            ex.printStackTrace();
             return null;
         }
     }

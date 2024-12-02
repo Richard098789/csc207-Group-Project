@@ -10,7 +10,7 @@ public interface ReadSongDataAccessInterface {
     /**
      * Read top songs.
      * @param documentID document ID
-     * @return a list of recordings
+     * @return a array of recordings
      */
     Recording[] readTopSongs(String documentID);
 }

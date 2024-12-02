@@ -14,9 +14,9 @@ public interface SignupDataAccessInterface {
 
     /**
      * Saves the user.
+     *
      * @param username the username entered.
      * @param password the password entered
-     * @return true if a user is added successfully
      */
-    boolean addUser(String username, String password);
+    void addUser(String username, String password);
 }

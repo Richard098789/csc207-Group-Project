@@ -10,13 +10,11 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 
 public class EventListingView {
-    private JFrame frame;
-    private JPanel listingPanel;
-    private JScrollPane scrollPane;
-    private JButton loadMoreButton;
-    private JTextField searchField;
-    private JTextField locationField;
-    private JButton searchButton;
+    private final JFrame frame;
+    private final JPanel listingPanel;
+    private final JButton loadMoreButton;
+    private final JTextField searchField;
+    private final JTextField locationField;
     private int offset = 0; // Start point for pagination
     private final int LIMIT = 10; // Number of results per request
     private boolean hasMore = true; // Flag to indicate if there are more results
@@ -40,7 +38,7 @@ public class EventListingView {
         searchField = new JTextField(15);
         locationField = new JTextField(10);
 
-        searchButton = new JButton("Search");
+        JButton searchButton = new JButton("Search");
         searchButton.addActionListener(new SearchListener());
 
         searchPanel.add(new JLabel("Event:"));
@@ -57,7 +55,7 @@ public class EventListingView {
         listingPanel.setBackground(Color.WHITE);
 
         // Scroll Pane
-        scrollPane = new JScrollPane(listingPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+        JScrollPane scrollPane = new JScrollPane(listingPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         frame.add(scrollPane, BorderLayout.CENTER);

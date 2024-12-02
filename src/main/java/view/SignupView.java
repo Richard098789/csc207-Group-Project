@@ -8,10 +8,10 @@ import java.awt.*;
 
 public class SignupView {
     private SignupController signupController;
-    private JFrame frame;
+    private final JFrame frame;
 
     public SignupView() {
-        JFrame frame = new JFrame("Sign-Up Page");
+        frame = new JFrame("Sign-Up Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
 

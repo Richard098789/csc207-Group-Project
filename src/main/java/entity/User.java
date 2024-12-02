@@ -16,7 +16,7 @@ public class User {
     private final int userId;
     private String username;
     private String password;
-    private List<String> commentId;
+    private final List<String> commentId;
 
     public User(String username, String password) {
         this.userId = idCounter++;

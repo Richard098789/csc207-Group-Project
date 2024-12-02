@@ -6,7 +6,6 @@ import data_transfer_object.Event;
 import view.EventListingView;
 
 public class EventSearchPresenter implements EventSearchOutputBoundary {
-    private Event[] results;
     private final EventListingView eventListingView;
 
     public EventSearchPresenter(EventListingView eventListingView) {
@@ -15,12 +14,7 @@ public class EventSearchPresenter implements EventSearchOutputBoundary {
 
     @Override
     public void presentResults(EventSearchOutputData outputData) {
-        this.results = outputData.getEvents();
-        eventListingView.presentResults(this.results);
-    }
-
-    // Getter to retrieve the results if needed
-    public Event[] getResults() {
-        return results;
+        Event[] results = outputData.getEvents();
+        eventListingView.presentResults(results);
     }
 }

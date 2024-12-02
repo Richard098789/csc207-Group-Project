@@ -13,7 +13,7 @@ public interface ArtistSearchDataAccessInterface {
      * @param country country of interest
      * @param limit limit
      * @param offset offset
-     * @return a list of artists.
+     * @return an array of artists.
      */
     Artist[] getArtists(String artistName, String country, int limit, int offset);
 }

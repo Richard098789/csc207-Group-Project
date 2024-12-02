@@ -13,8 +13,7 @@ import global_storage.CurrentUser;
 
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
+
 /**
  * The data access object of public information.
  */

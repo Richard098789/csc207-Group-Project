@@ -6,14 +6,6 @@ package Use_case.login;
 public interface LoginDataAccessInterface {
 
     /**
-     * Add user.
-     * @param username username
-     * @param password password
-     * @return boolean indicates success or fail.
-     */
-    boolean addUser(String username, String password);
-
-    /**
      * Validate login.
      * @param username username
      * @param password password

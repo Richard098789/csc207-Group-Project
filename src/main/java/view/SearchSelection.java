@@ -14,7 +14,7 @@ import app.AppCoordinator;
 
 public class SearchSelection {
 
-    private JFrame frame;
+    private final JFrame frame;
 
     public SearchSelection() {
         frame = new JFrame("Music Listing");

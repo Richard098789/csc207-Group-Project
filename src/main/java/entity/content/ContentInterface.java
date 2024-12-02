@@ -1,18 +1,11 @@
 package entity.content;
 
-import java.util.List;
 import java.util.Map;
 
 /**
  * The interface for content.
  */
 public interface ContentInterface {
-
-    /**
-     * Returns the Content ID.
-     * @return the Content ID.
-     */
-    String getContentID();
 
     /**
      * Set content information.
@@ -28,7 +21,7 @@ public interface ContentInterface {
   
     /**
      * Get the list of comments.
-     * @return the list of comments
+     * @return the of comments
      */
     Map<String, String> getComments();
 

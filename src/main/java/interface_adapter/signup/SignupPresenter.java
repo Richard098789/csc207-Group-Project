@@ -5,7 +5,7 @@ import app.AppCoordinator;
 import view.SignupView;
 
 public class SignupPresenter implements SignupOutputBoundary {
-    private SignupView view;
+    private final SignupView view;
     public SignupPresenter(SignupView view) {
         this.view = view;
     }
@@ -27,7 +27,6 @@ public class SignupPresenter implements SignupOutputBoundary {
 
     @Override
     public void switchToLoginView() {
-        AppCoordinator appCoordinator = AppCoordinator.getInstance();
-        appCoordinator.createLoginView();
+        view.goLoginView();
     }
 }

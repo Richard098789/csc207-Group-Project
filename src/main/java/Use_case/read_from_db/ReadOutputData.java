@@ -11,11 +11,11 @@ import data_transfer_object.Recording;
  */
 public class ReadOutputData {
 
-    private Map<String, String> comments;
-    private double averageRating;
-    private Artist artist;
+    private final Map<String, String> comments;
+    private final double averageRating;
+    private final Artist artist;
 
-    private Recording[] recording;
+    private final Recording[] recording;
 
     public ReadOutputData(Recording[] topSongs, Map<String, String> comments, double averageRating, Artist artist) {
 

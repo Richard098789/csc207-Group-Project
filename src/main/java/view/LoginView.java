@@ -1,22 +1,25 @@
 package view;
 
-import UI.ArtistListing;
 import Use_case.UserManager;
-import Controller.LoginController;
+import Use_case.login.LoginInputBoundary;
+import Use_case.login.LoginInteractor;
+import Use_case.login.LoginOutputBoundary;
+import app.AppCoordinator;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView {
     private LoginController loginController;
+    private JFrame frame;
 
     public LoginView() {
-        userManager.loadUsersFromDB(); // Load all users
-        LoginController controller = new LoginController(userManager);
-        createAndShowGUI(controller);
+        createAndShowGUI();
     }
 
-    private void createAndShowGUI(LoginController controller) {
+    private void createAndShowGUI() {
         JFrame frame = new JFrame("Login Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
@@ -43,20 +46,39 @@ public class LoginView {
         loginButton.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
-            loginController.login(username, password);
+            loginController.execute(username, password);
         });
 
         // Sign-Up Button ActionListener
         signupButton.addActionListener(e -> {
+            loginController.goSignupView();
             frame.dispose(); // Close login window
-            new SignupView(); // Pass shared UserManager instance to SignupView
+
         });
 
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        UserManager userManager = new UserManager(); // Shared instance
-        new LoginView();
+    public void toSignup() {
+        AppCoordinator coordinator = AppCoordinator.getInstance();
+        coordinator.createSignUpView();
     }
+
+
+    public void loginFailureView() {
+        JOptionPane.showMessageDialog(frame, "Invalid username or password!",
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void toMainMenuView() {
+        JOptionPane.showMessageDialog(frame, "Login successful!");
+        AppCoordinator coordinator = AppCoordinator.getInstance();
+        coordinator.createMainMenuView();
+    }
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;}
+
+
+
+
 }

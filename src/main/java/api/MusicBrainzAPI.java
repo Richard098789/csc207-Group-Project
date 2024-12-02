@@ -1,6 +1,6 @@
 package api;
 
-import entity.Recording;
+import data_transfer_object.Recording;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

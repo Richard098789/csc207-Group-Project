@@ -5,9 +5,9 @@ import Use_case.DBWriter;
 import Use_case.UserManager;
 import api.MusicBrainzAPI;
 import com.google.cloud.firestore.Firestore;
-import entity.Artist;
+import data_transfer_object.Artist;
 import entity.Content;
-import entity.Recording;
+import data_transfer_object.Recording;
 
 import java.util.List;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package view;
 
 import Controller.ArtistDetailController;
-import entity.Recording;
+import data_transfer_object.Recording;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,29 +1,33 @@
 package interface_adapter.signup;
 
 import Use_case.signup.SignupOutputBoundary;
-import view.SignupView_New;
+import app.AppCoordinator;
+import view.SignupView;
 
 public class SignupPresenter implements SignupOutputBoundary {
-
-    @Override
-    public void prepareSuccessView(String successMessage) {
-
+    private SignupView view;
+    public SignupPresenter(SignupView view) {
+        this.view = view;
     }
 
     @Override
-    public void prepareFailView(String errorMessage) {
-
-
+    public void prepareSuccessView() {
+        view.signupSuccess();
     }
 
     @Override
-    public void prepareUnmatchPasswordView(String unmatchPasswordMessage) {
+    public void prepareFailView() {
+        view.signupFailure();
+    }
 
+    @Override
+    public void prepareUnmatchPasswordView() {
+        view.passwordUnmatched();
     }
 
     @Override
     public void switchToLoginView() {
-        SignupView_New signupView = new SignupView_New();
-        signupView.createAndShowGUI();
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
+        appCoordinator.createLoginView();
     }
 }

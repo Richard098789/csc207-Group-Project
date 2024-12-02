@@ -1,4 +1,4 @@
-package api;
+package Use_case.event_search;
 
 import data_transfer_object.Event;
 import okhttp3.OkHttpClient;
@@ -7,8 +7,10 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.UUID;
 
-public class API_v2_getEvent {
+public class MusicBrainzEventRepository {
+
     private static final String BASE_URL = "https://musicbrainz.org/ws/2";
     private static final String FORMAT = "fmt=json";
 
@@ -16,10 +18,10 @@ public class API_v2_getEvent {
         OkHttpClient client = new OkHttpClient();
         StringBuilder queryBuilder = new StringBuilder(BASE_URL + "/event/?query=");
 
-        if (!eventName.isEmpty()) {
+        if (eventName != null && !eventName.isEmpty()) {
             queryBuilder.append("event:").append(eventName).append(" ");
         }
-        if (!location.isEmpty()) {
+        if (location != null && !location.isEmpty()) {
             queryBuilder.append("AND location:").append(location).append(" ");
         }
 
@@ -37,7 +39,6 @@ public class API_v2_getEvent {
 
             Event[] result = new Event[events.length()];
             for (int i = 0; i < events.length(); i++) {
-
                 JSONObject event = events.getJSONObject(i);
 
                 // Initialize placeholders for optional fields with default values
@@ -71,29 +72,29 @@ public class API_v2_getEvent {
                         }
                     }
                 }
-                String Begin = "Unknown";
-                String End = "Unknown";
+
+                String begin = "Unknown";
+                String end = "Unknown";
                 // Check and extract begin and end information
                 if (event.has("life-span")) {
                     final JSONObject lifespan = event.getJSONObject("life-span");
 
                     if (lifespan.has("begin")) {
-                        Begin = lifespan.optString("begin", "Unknown");
+                        begin = lifespan.optString("begin", "Unknown");
                     }
 
                     if (lifespan.has("end")) {
-                        End = lifespan.optString("end", "Unknown");
+                        end = lifespan.optString("end", "Unknown");
                     }
-
                 }
 
                 // Build the Event object with all extracted data
                 result[i] = Event.builder()
-                        .id(event.getString("id"))
+                        .id(event.optString("id", UUID.randomUUID().toString()))
                         .name(event.getString("name"))
                         .type(event.optString("type", "N/A"))
-                        .beginDate(Begin)
-                        .endDate(End)
+                        .beginDate(begin)
+                        .endDate(end)
                         .time(event.optString("time", "N/A"))
                         .placeName(placeName)
                         .placeId(placeId)
@@ -109,4 +110,3 @@ public class API_v2_getEvent {
         }
     }
 }
-

@@ -38,18 +38,32 @@ public class SearchSelection {
         buttonPanel.add(mainMenuButton);
 
         frame.add(buttonPanel, BorderLayout.CENTER);
+
         AppCoordinator appCoordinator = AppCoordinator.getInstance();
+
         // Listings button handlers
-        artistButton.addActionListener(e -> appCoordinator.createArtistListingView()); // Pass the required arguments
-//        eventButton.addActionListener(e -> new EventListing()); // Assuming EventListing requires no arguments for now
+        artistButton.addActionListener(e -> {
+            // Close the current frame
+            frame.dispose();
+
+            // Open the artist listing view
+            appCoordinator.createArtistListingView();
+        });
+
+        eventButton.addActionListener(e -> {
+            // Close the current frame
+            frame.dispose();
+
+            // Open the event listing view
+            appCoordinator.createEventListingView();
+        });
+
         mainMenuButton.addActionListener(e -> {
             // Close the current frame
             frame.dispose();
 
             // Open the main menu page
-
             appCoordinator.createMainMenuView();
-
         });
 
         frame.setVisible(true);
@@ -58,5 +72,4 @@ public class SearchSelection {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SearchSelection::new);
     }
-
 }

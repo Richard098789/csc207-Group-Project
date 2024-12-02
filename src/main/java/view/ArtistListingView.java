@@ -1,14 +1,19 @@
 package view;
 
 import api.API_v2;
+import app.AppCoordinator;
 import data_transfer_object.Artist;
+import data_transfer_object.Recording;
 import entity.Content;
 import interface_adapter.artist_search.ArtistSearchController;
+import interface_adapter.read_from_db.ReadController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.Map;
 
 public class ArtistListingView {
     private JFrame frame;
@@ -26,6 +31,7 @@ public class ArtistListingView {
     private String searchCountry = ""; // Search filter for country
     private String searchType = ""; // Search filter for type
     private ArtistSearchController artistSearchController;
+    private ReadController readController;
 
     public ArtistListingView() {
 
@@ -151,8 +157,7 @@ public class ArtistListingView {
         artistPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-//                ArtistDetailController controller = new ArtistDetailController(artist, content, db);
-//                new ArtistDetailView(controller);
+                readController.execute(artist.getId(), artist);
             }
 
             @Override
@@ -239,5 +244,16 @@ public class ArtistListingView {
 
     public void setArtistSearchController(ArtistSearchController artistSearchController) {
         this.artistSearchController = artistSearchController;
+    }
+
+    public void setReadController(ReadController readController) {
+        this.readController = readController;
+    }
+
+    public void createArtistDetailView(Recording[] topSongs,
+                                       List<Map<String, String>> comments, Artist artist,
+                                       Double averageRating) {
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
+        appCoordinator.createArtistDetailView(topSongs, comments, artist, averageRating);
     }
 }

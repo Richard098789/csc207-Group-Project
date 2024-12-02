@@ -1,5 +1,11 @@
 package app;
 
+import Use_case.read_from_db.*;
+import data_access.DBPublicAccessObject;
+import data_transfer_object.Artist;
+import data_transfer_object.Recording;
+import interface_adapter.read_from_db.ArtistReadPresenter;
+import interface_adapter.read_from_db.ReadController;
 import view.*;
 import Use_case.artist_search.ArtistSearchDataAccessInterface;
 import Use_case.artist_search.ArtistSearchInputBoundary;
@@ -21,6 +27,9 @@ import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
+
+import java.util.List;
+import java.util.Map;
 
 public class AppCoordinator {
     // use singleton pattern to save view info.
@@ -68,8 +77,22 @@ public class AppCoordinator {
         final ArtistSearchController artistSearchController = new ArtistSearchController(artistSearchInteractor);
 
         artistListingView.setArtistSearchController(artistSearchController);
+
+        final ReadOutputBoundary readOutputBoundary = new ArtistReadPresenter(artistListingView);
+        final ReadDataAccessInterface readDataAccessInterface = new DBPublicAccessObject();
+        final ReadSongDataAccessInterface musicBrainZAPI = new MusicBrainzArtistRepository();
+        final ReadInputBoundary readInteractor = new ArtistReadInteractor(
+                readOutputBoundary,readDataAccessInterface, musicBrainZAPI);
+        final ReadController readController = new ReadController(readInteractor);
+
+        artistListingView.setReadController(readController);
     }
 
+    public void createArtistDetailView(Recording[] topSongs,
+                                       List<Map<String, String>> comments, Artist artist,
+                                       Double averageRating) {
+        ArtistDetailView artistDetailView = new ArtistDetailView(topSongs, comments, artist, averageRating);
+    }
     public void createSearchSelectionView() {
         SearchSelection searchSelection = new SearchSelection();
     }

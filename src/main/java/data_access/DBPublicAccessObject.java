@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 public class DBPublicAccessObject implements ReadDataAccessInterface {
 
-    private Firestore db = CurrentUser.db;
+    private final Firestore db = CurrentUser.db;
 
     @Override
     public Map<String, Object> readContents(String documentID) {
@@ -22,8 +22,6 @@ public class DBPublicAccessObject implements ReadDataAccessInterface {
 
                 return document.getData();
 
-            } else {
-                System.out.println("Document does not exist");
             }
 
         }

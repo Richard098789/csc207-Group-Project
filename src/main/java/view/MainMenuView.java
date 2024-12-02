@@ -1,5 +1,7 @@
 package view;
 
+import app.AppCoordinator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +36,8 @@ public class MainMenuView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose(); // Close the main menu window
-                new SearchSelection(); // Open the music listing window
+                AppCoordinator appCoordinator = AppCoordinator.getInstance();
+                appCoordinator.createSearchSelectionView();
             }
         });
 

@@ -23,9 +23,8 @@ import javax.swing.SwingUtilities;
 
 import Use_case.artist_search.ArtistSearchInteractor;
 import Use_case.artist_search.MusicBrainzArtistRepository;
-import Controller.ArtistSearchController;
-import Use_case.artist_search.ArtistSearchPresenter;
 import entity.Artist;
+import interface_adapter.artist_search.ArtistSearchController;
 
 public class ArtistListing {
     private JFrame frame;
@@ -44,12 +43,9 @@ public class ArtistListing {
     private String searchType = ""; // Search filter for type
 
     // Dependencies for the refactored architecture
-    private final ArtistSearchController artistSearchController;
-    private final ArtistSearchPresenter artistSearchPresenter;
+    private ArtistSearchController artistSearchController;
 
-    public ArtistListing(ArtistSearchController artistSearchController, ArtistSearchPresenter artistSearchPresenter) {
-        this.artistSearchController = artistSearchController;
-        this.artistSearchPresenter = artistSearchPresenter;
+    public ArtistListing() {
 
         frame = new JFrame("Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -228,10 +224,13 @@ public class ArtistListing {
         }
     }
 
+    public void setArtistSearchController(ArtistSearchController artistSearchController) {
+        this.artistSearchController = artistSearchController;
+    }
+
     public static void main(String[] args) {
         // Initialize the refactored dependencies
         MusicBrainzArtistRepository repository = new MusicBrainzArtistRepository();
-        ArtistSearchPresenter presenter = new ArtistSearchPresenter();
         ArtistSearchInteractor interactor = new ArtistSearchInteractor(repository, presenter);
         ArtistSearchController controller = new ArtistSearchController(interactor);
 

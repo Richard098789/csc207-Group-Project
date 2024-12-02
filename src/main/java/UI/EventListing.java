@@ -1,12 +1,16 @@
 package UI;
 
-import api.API_v2_getEvent;
 import entity.Event;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+// Import the refactored classes
+import Controller.EventSearchController;
+import Use_case.event_search.EventSearchInteractor;
+import Use_case.event_search.EventSearchPresenter;
+import Use_case.event_search.MusicBrainzEventRepository;
 
 public class EventListing {
     private JFrame frame;
@@ -18,12 +22,15 @@ public class EventListing {
     private JComboBox<String> typeDropdown;
     private JButton searchButton;
     private int offset = 0; // Start point for pagination
-    private final int LIMIT = 10; // Number of result displayed per request
-    private boolean hasMore = true; // Flag to indicate if there is more results
+    private final int LIMIT = 10; // Number of results per request
+    private boolean hasMore = true; // Flag to indicate if there are more results
     private String searchEvent = ""; // Search filter for event names
     private String searchLocation = ""; // Search filter for location names
     private String searchType = ""; // Search filter for types of event
 
+    // Add variables for the refactored code
+    private EventSearchController eventSearchController;
+    private EventSearchPresenter eventSearchPresenter;
 
     public EventListing() {
         frame = new JFrame("Event Listing");
@@ -75,19 +82,25 @@ public class EventListing {
         loadMoreButton.addActionListener(new LoadMoreListener());
         frame.add(loadMoreButton, BorderLayout.SOUTH);
 
+        // Initialize the refactored dependencies
+        MusicBrainzEventRepository repository = new MusicBrainzEventRepository();
+        eventSearchPresenter = new EventSearchPresenter();
+        EventSearchInteractor interactor = new EventSearchInteractor(repository, eventSearchPresenter);
+        eventSearchController = new EventSearchController(interactor);
+
         // Fetch and display the first set of results
         fetchAndDisplayListings();
 
         frame.setVisible(true);
-
     }
 
     private void fetchAndDisplayListings() {
-        API_v2_getEvent api = new API_v2_getEvent();
-
         try {
-            // Fetch paginated events data using input parameters
-            Event[] events = api.getEvents(searchEvent, searchLocation, LIMIT, offset);
+            // Use the refactored controller to fetch paginated event data
+            eventSearchController.searchEvents(searchEvent, searchLocation, LIMIT, offset);
+
+            // Retrieve results from the presenter
+            Event[] events = eventSearchPresenter.getResults();
 
             if (events.length == 0 && offset == 0) {
                 JLabel noDataLabel = new JLabel("No events found!");
@@ -117,7 +130,6 @@ public class EventListing {
                 }
             }
         } catch (Exception e) {
-
             JLabel errorLabel = new JLabel("Error fetching events: " + e.getMessage());
             errorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
             listingPanel.add(errorLabel);
@@ -156,14 +168,12 @@ public class EventListing {
         eventPanel.add(additionalInfoLabel1);
         eventPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
         // Add MouseListener to detect clicks
         eventPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Navigate to EventDetailView when clicked
                 new view.EventDetailView(event); // Pass the event object to the detail view
-                //frame.dispose(); // Close the current window (optional)
             }
 
             @Override
@@ -214,5 +224,4 @@ public class EventListing {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(EventListing::new);
     }
-
 }

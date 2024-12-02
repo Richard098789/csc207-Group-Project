@@ -1,17 +1,33 @@
 package UI;
 
-import api.API_v2;
-import entity.Artist;
-import entity.Content;
-import Controller.ArtistDetailController;
-import view.ArtistDetailView;
-import database.FireStoreInitializer;
-
-import com.google.cloud.firestore.Firestore;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+
+import Use_case.artist_search.ArtistSearchInteractor;
+import Use_case.artist_search.MusicBrainzArtistRepository;
+import entity.Artist;
+
+import interface_adapter.artist_search.ArtistSearchController;
+
 
 public class ArtistListing {
     private JFrame frame;
@@ -30,13 +46,11 @@ public class ArtistListing {
     private String searchType = ""; // Search filter for type
     private Firestore db;
 
+    // Dependencies for the refactored architecture
+    private ArtistSearchController artistSearchController;
+
     public ArtistListing() {
-        // Initialize Firestore
-        db = FireStoreInitializer.initializeFirestore();
-        if (db == null) {
-            JOptionPane.showMessageDialog(null, "Failed to initialize Firestore. Application will exit.", "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
-        }
+
 
         frame = new JFrame("Music Listings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,47 +106,56 @@ public class ArtistListing {
     }
 
     private void fetchAndDisplayListings() {
-        API_v2 api = new API_v2();
 
-        try {
-            // Fetch paginated artist data using correct parameters
-            Artist[] artists = api.getArtists(searchArtist, searchCountry, LIMIT, offset);
+        // Run the network call on a background thread
+        new Thread(() -> {
+            try {
+                // Use the refactored controller to fetch paginated artist data
+                artistSearchController.searchArtists(searchArtist, searchCountry, LIMIT, offset);
 
-            if (artists.length == 0 && offset == 0) {
-                JLabel noDataLabel = new JLabel("No artists found!");
-                noDataLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-                listingPanel.add(noDataLabel);
-                hasMore = false;
-                loadMoreButton.setEnabled(false);
-            } else {
-                // Display paginated results
-                for (Artist artist : artists) {
-                    // Filter by type if specified
-                    if (searchType.equals("Any") || artist.getType().equalsIgnoreCase(searchType)) {
-                        Content content = new Content(artist.getId());
-                        listingPanel.add(createArtistPanel(artist, content));
+                // Retrieve results from the presenter
+                Artist[] artists = artistSearchPresenter.getResults();
+
+                // Update the UI on the Event Dispatch Thread
+                SwingUtilities.invokeLater(() -> {
+                    if (artists == null || (artists.length == 0 && offset == 0)) {
+                        JLabel noDataLabel = new JLabel("No artists found!");
+                        noDataLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+                        listingPanel.add(noDataLabel);
+                        hasMore = false;
+                        loadMoreButton.setEnabled(false);
+                    } else {
+                        // Display paginated results
+                        for (Artist artist : artists) {
+                            // Filter by type if specified
+                            if (searchType.equals("Any") || artist.getType().equalsIgnoreCase(searchType)) {
+                                listingPanel.add(createArtistPanel(artist));
+                            }
+                        }
+
+                        offset += LIMIT;
+
+                        // Refresh UI components
+                        listingPanel.revalidate();
+                        listingPanel.repaint();
+
+                        if (artists.length < LIMIT) {
+                            hasMore = false;
+                            loadMoreButton.setText("No More Results");
+                            loadMoreButton.setEnabled(false);
+                        }
+
                     }
-                }
-
-                offset += LIMIT;
-
-                // Refresh UI components
-                listingPanel.revalidate();
-                listingPanel.repaint();
-
-                if (artists.length < LIMIT) {
-                    hasMore = false;
-                    loadMoreButton.setText("No More Results");
-                    loadMoreButton.setEnabled(false);
-                }
+                });
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> {
+                    JLabel errorLabel = new JLabel("Error fetching artists: " + e.getMessage());
+                    errorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+                    listingPanel.add(errorLabel);
+                });
             }
-        } catch (Exception e) {
-            JLabel errorLabel = new JLabel("Error fetching artists: " + e.getMessage());
-            errorLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-            listingPanel.add(errorLabel);
-            listingPanel.revalidate();
-            listingPanel.repaint();
-        }
+
+
     }
 
     private JPanel createArtistPanel(Artist artist, Content content) {
@@ -156,21 +179,27 @@ public class ArtistListing {
         additionalInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         artistPanel.add(additionalInfoLabel, BorderLayout.CENTER);
 
-        // Add MouseListener to detect clicks
-        artistPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+        // Add MouseListener to detect clicks and hover effects
+        artistPanel.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ArtistDetailController controller = new ArtistDetailController(artist, content, db);
-                new ArtistDetailView(controller);
+
+            public void mouseClicked(MouseEvent evt) {
+                // Navigate to ArtistDetailView when clicked
+                new view.ArtistDetailView(artist); // Pass the artist object to the detail view
             }
 
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            public void mouseEntered(MouseEvent evt) {
+                // Highlight the panel when hovered
+
                 artistPanel.setBackground(new Color(200, 220, 240)); // Slightly darker blue
             }
 
             @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+
+            public void mouseExited(MouseEvent evt) {
+                // Reset the background color when mouse exits
+
                 artistPanel.setBackground(new Color(240, 248, 255)); // Reset to the original color
             }
         });
@@ -207,7 +236,16 @@ public class ArtistListing {
         }
     }
 
+    public void setArtistSearchController(ArtistSearchController artistSearchController) {
+        this.artistSearchController = artistSearchController;
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(ArtistListing::new);
+        // Initialize the refactored dependencies
+        MusicBrainzArtistRepository repository = new MusicBrainzArtistRepository();
+        ArtistSearchInteractor interactor = new ArtistSearchInteractor(repository, presenter);
+        ArtistSearchController controller = new ArtistSearchController(interactor);
+
+        SwingUtilities.invokeLater(() -> new ArtistListing(controller, presenter));
     }
 }

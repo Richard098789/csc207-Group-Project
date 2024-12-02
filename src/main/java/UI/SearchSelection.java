@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Use_case.UserManager;
+import Controller.ArtistSearchController;
+import Use_case.artist_search.ArtistSearchInteractor;
+import Use_case.artist_search.ArtistSearchPresenter;
+import Use_case.artist_search.MusicBrainzArtistRepository;
 import view.MainMenuView;
 
 public class SearchSelection {
@@ -40,15 +44,23 @@ public class SearchSelection {
 
         frame.add(buttonPanel, BorderLayout.CENTER);
 
-        // Listings button handler
-        artistButton.addActionListener(e -> new ArtistListing());
-        eventButton.addActionListener(e -> new EventListing());
+        // Initialize dependencies for ArtistListing
+        MusicBrainzArtistRepository repository = new MusicBrainzArtistRepository();
+        ArtistSearchPresenter presenter = new ArtistSearchPresenter();
+        ArtistSearchInteractor interactor = new ArtistSearchInteractor(repository, presenter);
+        ArtistSearchController controller = new ArtistSearchController(interactor);
+
+        // Listings button handlers
+        artistButton.addActionListener(e -> new ArtistListing(controller, presenter)); // Pass the required arguments
+        eventButton.addActionListener(e -> new EventListing()); // Assuming EventListing requires no arguments for now
         mainMenuButton.addActionListener(e -> {
             // Close the current frame
             frame.dispose();
 
             // Open the main menu page
+
             new MainMenuView(); // Require to be fixed: usermanager should inherit from the previous ones.
+
 
         });
 

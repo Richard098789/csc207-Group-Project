@@ -1,6 +1,6 @@
 package view;
 
-import Controller.ArtistDetailController;
+import data_transfer_object.Artist;
 import data_transfer_object.Recording;
 
 import javax.swing.*;
@@ -10,16 +10,11 @@ import java.util.Map;
 
 public class ArtistDetailView {
     private JFrame frame;
-    private final ArtistDetailController controller;
     private JPanel commentsPanel;  // Keeping reference for updating comments
     private JScrollPane commentsScrollPane;  // ScrollPane reference for comments
 
-    public ArtistDetailView(ArtistDetailController controller) {
-        this.controller = controller;
-        createAndShowGUI();
-    }
-
-    private void createAndShowGUI() {
+    public ArtistDetailView(Recording[] topSongs, List<Map<String, String>> comments,
+                            Artist artist, Double averageRating) {
         frame = new JFrame("Artist Details");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 800); // Increased size to fit all elements comfortably
@@ -34,7 +29,7 @@ public class ArtistDetailView {
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        updateDetailsPanel(detailsPanel);
+        updateDetailsPanel(detailsPanel, artist, averageRating);
 
         frame.add(detailsPanel, BorderLayout.CENTER);
 
@@ -43,23 +38,22 @@ public class ArtistDetailView {
         frame.add(userInputPanel, BorderLayout.SOUTH);
 
         // Load existing comments
-        loadComments();
+        loadComments(comments);
 
         // Load songs
-        loadSongs();
+        loadSongs(topSongs);
 
         frame.setVisible(true);
     }
 
-    private void updateDetailsPanel(JPanel detailsPanel) {
+    private void updateDetailsPanel(JPanel detailsPanel, Artist artist, Double averageRating) {
         detailsPanel.removeAll();
 
-        detailsPanel.add(createDetailLabel("Artist Name: ", controller.getArtist().getArtistName()));
-        detailsPanel.add(createDetailLabel("ID: ", controller.getArtist().getId()));
-        detailsPanel.add(createDetailLabel("Country: ", controller.getArtist().getCountry()));
-        detailsPanel.add(createDetailLabel("Score: ", String.valueOf(controller.getArtist().getScore())));
-        detailsPanel.add(createDetailLabel("Type: ", controller.getArtist().getType()));
-        detailsPanel.add(createDetailLabel("Average Rating: ", String.valueOf(controller.getAverageRating())));
+        detailsPanel.add(createDetailLabel("Artist Name: ", artist.getArtistName()));
+        detailsPanel.add(createDetailLabel("ID: ", artist.getId()));
+        detailsPanel.add(createDetailLabel("Country: ", artist.getCountry()));
+        detailsPanel.add(createDetailLabel("Type: ", artist.getType()));
+        detailsPanel.add(createDetailLabel("Average Rating: ", String.valueOf(averageRating)));
 
         detailsPanel.revalidate();
         detailsPanel.repaint();
@@ -120,16 +114,16 @@ public class ArtistDetailView {
             if (comment.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Please add a comment before submitting.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                controller.submitFeedback(rating, comment);
-                JOptionPane.showMessageDialog(frame, "Thank you for your feedback!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                // Clear fields
-                ratingDropdown.setSelectedIndex(0);
-                commentBox.setText("");
-
-                // Refresh the average rating and comments
-                updateDetailsPanel(detailsPanel);
-                loadComments(); // Refresh comments immediately after adding a new one
+//                controller.submitFeedback(rating, comment);
+//                JOptionPane.showMessageDialog(frame, "Thank you for your feedback!", "Success", JOptionPane.INFORMATION_MESSAGE);
+//
+//                // Clear fields
+//                ratingDropdown.setSelectedIndex(0);
+//                commentBox.setText("");
+//
+//                // Refresh the average rating and comments
+//                updateDetailsPanel(detailsPanel, artist, averageRating);
+//                loadComments(comments); // Refresh comments immediately after adding a new one
             }
         });
         userInputPanel.add(addButton);
@@ -137,7 +131,7 @@ public class ArtistDetailView {
         return userInputPanel;
     }
 
-    private void loadComments() {
+    private void loadComments(List<Map<String, String>> comments) {
         if (commentsPanel != null) {
             frame.remove(commentsScrollPane);  // Remove the existing scroll pane to refresh
         }
@@ -146,15 +140,15 @@ public class ArtistDetailView {
         commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
         commentsPanel.setBorder(BorderFactory.createTitledBorder("Comments"));
 
-        List<Map<String, Object>> comments = controller.getComments();
-        for (Map<String, Object> comment : comments) {
-            String username = (String) comment.get("username");
-            String text = (String) comment.get("comment");
-            JLabel commentLabelItem = new JLabel("<html><b>" + username + ":</b> " + text + "</html>");
-            commentLabelItem.setFont(new Font("Arial", Font.PLAIN, 14));
-            commentsPanel.add(commentLabelItem);
+        if (!comments.isEmpty()) {
+            for (Map<String, String> comment : comments) {
+                String username = comment.get("username");
+                String text = comment.get("comment");
+                JLabel commentLabelItem = new JLabel("<html><b>" + username + ":</b> " + text + "</html>");
+                commentLabelItem.setFont(new Font("Arial", Font.PLAIN, 14));
+                commentsPanel.add(commentLabelItem);
+            }
         }
-
         commentsScrollPane = new JScrollPane(commentsPanel);
         commentsScrollPane.setPreferredSize(new Dimension(400, 250)); // Adjusted the size to fit more comments
 
@@ -163,16 +157,16 @@ public class ArtistDetailView {
         frame.repaint();
     }
 
-    private void loadSongs() {
+    private void loadSongs(Recording[] topSongs) {
         JPanel songsPanel = new JPanel();
         songsPanel.setLayout(new BoxLayout(songsPanel, BoxLayout.Y_AXIS));
         songsPanel.setBorder(BorderFactory.createTitledBorder("Top Songs"));
 
-        Recording[] songs = controller.getSongs(); // Assuming `controller.getSongs()` gets the top 10 songs for the artist
-        if (songs.length == 0) {
+
+        if (topSongs.length == 0) {
             songsPanel.add(new JLabel("No songs found."));
         } else {
-            for (Recording song : songs) {
+            for (Recording song : topSongs) {
                 JLabel songLabel = new JLabel(song.getTitle() + " (" + song.getFormattedLength() + ")");
                 songLabel.setFont(new Font("Arial", Font.PLAIN, 14));
                 songsPanel.add(songLabel);

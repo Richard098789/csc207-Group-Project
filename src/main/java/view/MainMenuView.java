@@ -4,8 +4,6 @@ import app.AppCoordinator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainMenuView {
 
@@ -30,26 +28,24 @@ public class MainMenuView {
         panel.add(logoutButton);
 
         frame.add(panel, BorderLayout.CENTER);
-
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
         // Music Listings button action
-        musicListingsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the main menu window
-                AppCoordinator appCoordinator = AppCoordinator.getInstance();
-                appCoordinator.createSearchSelectionView();
-            }
+        musicListingsButton.addActionListener(e -> {
+            frame.dispose(); // Close the main menu window
+            appCoordinator.createSearchSelectionView();
         });
 
         // Log Out button action
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose(); // Close the main menu
-                new LoginView(); // Go back to the login view
-            }
+        logoutButton.addActionListener(e -> {
+            frame.dispose(); // Close the main menu
+            appCoordinator.createLoginView(); // Go back to the login view
         });
 
+        accountButton.addActionListener(e -> appCoordinator.createUserAccountView());
+
         frame.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new MainMenuView();
     }
 }

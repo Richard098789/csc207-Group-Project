@@ -169,6 +169,11 @@ public final class AppCoordinator {
     public void createSearchSelectionView() {
         final SearchSelection searchSelection = new SearchSelection();
     }
+
+    /**
+     * Create the user account view.
+     */
+    public void createUserAccountView() {final UserAccountView userAccountView = new UserAccountView();}
 }
 
 

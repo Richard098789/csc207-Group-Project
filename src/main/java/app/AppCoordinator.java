@@ -43,6 +43,7 @@ import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import view.*;
 
+import java.util.Map;
 /**
  * The App coordinator class.
  */

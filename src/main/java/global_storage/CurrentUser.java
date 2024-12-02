@@ -10,7 +10,7 @@ public class CurrentUser {
     public static String username = "";
     public static Firestore db;
 
-    public CurrentUser() {
+    public void initialize() {
         db = FireStoreInitializer.initializeFirestore();
     }
 }

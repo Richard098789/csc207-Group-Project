@@ -12,7 +12,8 @@ public class App {
      * @param args default input.
      */
     public static void main(String[] args) {
-        final CurrentUser currentUser = new CurrentUser();
+        CurrentUser currentUser = new CurrentUser();
+        currentUser.initialize();
         final AppCoordinator appCoordinator = AppCoordinator.getInstance();
         appCoordinator.createLoginView();
     }

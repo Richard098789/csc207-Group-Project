@@ -32,8 +32,8 @@ public class WriterInteractor implements WriterInputBoundary {
         if (inputData.getRating() < 0 || inputData.getRating() > 10) {
             throw new IllegalArgumentException("Rating must be between 0 and 10.");
         }
-        if (inputData.getComment() != null && inputData.getComment().trim().isEmpty()) {
-            throw new IllegalArgumentException("Comment cannot be an empty string.");
+        if (inputData.getComment() == null || inputData.getComment().trim().isEmpty()) {
+            throw new IllegalArgumentException("Comment cannot be null or empty.");
         }
     }
 

@@ -25,7 +25,7 @@ public class ArtistReadInteractor implements ReadInputBoundary {
 
     @Override
     public void execute(ReadInputData readInputData) {
-        List<Map<String, String>> comments = new ArrayList<>();
+        Map<String, String> comments = new HashMap<>();
         double averageRating = 0.0;
         String documentID = readInputData.getDocumentID();
 

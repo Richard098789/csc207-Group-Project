@@ -8,20 +8,20 @@ import java.util.Map;
 
 public class ReadOutputData {
 
-    private List<Map<String, String>> comments;
+    private Map<String, String> comments;
     private double averageRating;
     private Artist artist;
 
     private Recording[] recording;
 
-    public ReadOutputData(Recording[] topSongs, List<Map<String, String>> comments, double averageRating, Artist artist) {
+    public ReadOutputData(Recording[] topSongs, Map<String, String> comments, double averageRating, Artist artist) {
         this.comments = comments;
         this.averageRating = averageRating;
         this.artist = artist;
         this.recording = topSongs;
     }
 
-    public List<Map<String, String>> getComments() {
+    public Map<String, String> getComments() {
         return comments;
     }
 

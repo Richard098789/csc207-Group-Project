@@ -251,7 +251,7 @@ public class ArtistListingView {
     }
 
     public void createArtistDetailView(Recording[] topSongs,
-                                       List<Map<String, String>> comments, Artist artist,
+                                       Map<String, String> comments, Artist artist,
                                        Double averageRating) {
         AppCoordinator appCoordinator = AppCoordinator.getInstance();
         appCoordinator.createArtistDetailView(topSongs, comments, artist, averageRating);

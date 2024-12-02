@@ -95,7 +95,7 @@ public class AppCoordinator {
     }
 
     public void createArtistDetailView(Recording[] topSongs,
-                                       List<Map<String, String>> comments, Artist artist,
+                                       Map<String, String> comments, Artist artist,
                                        Double averageRating) {
         ArtistDetailView artistDetailView = new ArtistDetailView(topSongs, comments, artist, averageRating);
         final WriterOutputBoundary writerPresenter = new WriterPresenter(artistDetailView);

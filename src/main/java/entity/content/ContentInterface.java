@@ -15,5 +15,5 @@ public interface ContentInterface {
 
     double getAverageRating();
 
-    List<Map<String, String>> getComments();
+    Map<String, String> getComments();
 }

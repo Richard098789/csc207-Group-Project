@@ -41,16 +41,14 @@ public class Content implements ContentInterface {
     }
 
     @Override
-    public List<Map<String, String>> getComments() {
-        List<Map<String, String>> comments = new ArrayList<>();
+    public Map<String, String> getComments() {
         Map<String, String> comment = new HashMap<>();
         for (String key : contentInfo.keySet()) {
             if (contentInfo.get(key).get("comment") != null) {
                 comment.put(key, (String) contentInfo.get(key).get("comment"));
-                comments.add(comment);
             }
         }
-        return comments;
+        return comment;
     }
 
     /**

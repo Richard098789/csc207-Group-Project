@@ -16,7 +16,7 @@ public class ArtistDetailView {
     private JScrollPane commentsScrollPane;  // ScrollPane reference for comments
     private WriterController writeController;
 
-    public ArtistDetailView(Recording[] topSongs, List<Map<String, String>> comments,
+    public ArtistDetailView(Recording[] topSongs, Map<String, String> comments,
                             Artist artist, Double averageRating) {
         frame = new JFrame("Artist Details");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -130,7 +130,7 @@ public class ArtistDetailView {
         return userInputPanel;
     }
 
-    private void loadComments(List<Map<String, String>> comments) {
+    private void loadComments(Map<String, String> comments) {
         if (commentsPanel != null) {
             frame.remove(commentsScrollPane);  // Remove the existing scroll pane to refresh
         }
@@ -141,10 +141,10 @@ public class ArtistDetailView {
 
         if (!comments.isEmpty()) {
             System.out.println(comments+"inside load comments");
-            for (Map<String, String> comment : comments) {
-                System.out.println(comment.get("Richard1"));
-                String username = comment.get("username");
-                String text = comment.get("comment");
+            for (String key : comments.keySet()) {
+                System.out.println(comments.get("Richard1"));
+                String username = key;
+                String text = comments.get(key);
                 JLabel commentLabelItem = new JLabel("<html><b>" + username + ":</b> " + text + "</html>");
                 commentLabelItem.setFont(new Font("Arial", Font.PLAIN, 14));
                 commentsPanel.add(commentLabelItem);

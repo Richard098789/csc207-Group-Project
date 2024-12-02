@@ -1,7 +1,8 @@
 package view;
 
-import Controller.ArtistDetailController;
 import entity.Recording;
+import global_storage.CurrentUser;
+import interface_adapter.writer.WriterController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +11,11 @@ import java.util.Map;
 
 public class ArtistDetailView {
     private JFrame frame;
-    private final ArtistDetailController controller;
+    private WriterController controller;
     private JPanel commentsPanel;  // Keeping reference for updating comments
     private JScrollPane commentsScrollPane;  // ScrollPane reference for comments
 
-    public ArtistDetailView(ArtistDetailController controller) {
-        this.controller = controller;
+    public ArtistDetailView() {
         createAndShowGUI();
     }
 
@@ -114,13 +114,13 @@ public class ArtistDetailView {
         JButton addButton = new JButton("Add");
         addButton.setFont(new Font("Arial", Font.PLAIN, 16));
         addButton.addActionListener(e -> {
-            int rating = (int) ratingDropdown.getSelectedItem();
+            double rating = (double) ratingDropdown.getSelectedItem();
             String comment = commentBox.getText().trim();
 
             if (comment.isEmpty()) {
                 JOptionPane.showMessageDialog(frame, "Please add a comment before submitting.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                controller.submitFeedback(rating, comment);
+                controller.execute("artistID", CurrentUser.username, comment, rating);
                 JOptionPane.showMessageDialog(frame, "Thank you for your feedback!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
                 // Clear fields
@@ -191,5 +191,9 @@ public class ArtistDetailView {
         JLabel label = new JLabel("<html><b>" + field + "</b>: " + value + "</html>");
         label.setFont(new Font("Arial", Font.PLAIN, 16));
         return label;
+    }
+
+    public void setWriterController(WriterController writerController) {
+        this.controller = writerController;
     }
 }

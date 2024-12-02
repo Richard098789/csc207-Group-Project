@@ -65,13 +65,13 @@ public class SignupView {
     public void setSignupController(SignupController signupController) {this.signupController = signupController;}
 
     public void goLoginView() {
-        AppCoordinator appCoordinator = new AppCoordinator();
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
         appCoordinator.createLoginView();
     }
 
     public void signupSuccess() {
         JOptionPane.showMessageDialog(frame, "Account created successfully!");
-        AppCoordinator appCoordinator = new AppCoordinator();
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
         appCoordinator.createLoginView();
     }
 

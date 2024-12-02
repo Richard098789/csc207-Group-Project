@@ -15,7 +15,7 @@ public class App {
 
     public static void main(String[] args) {
         CurrentUser currentUser = new CurrentUser();
-        AppCoordinator appCoordinator = new AppCoordinator();
+        AppCoordinator appCoordinator = AppCoordinator.getInstance();
         appCoordinator.createLoginView();
     }
 }

@@ -18,7 +18,7 @@ public class WriterController {
      * @param comment  The comment text.
      * @param rating   The rating value.
      */
-    public void submitFeedback(String artistId, String username, String comment, double rating) {
+    public void execute(String artistId, String username, String comment, double rating) {
         WriterInputData inputData = new WriterInputData(artistId, username, comment, rating);
         writerInteractor.executeComment(inputData);
         writerInteractor.executeRating(inputData);

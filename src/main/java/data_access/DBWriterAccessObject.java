@@ -6,6 +6,7 @@ import com.google.cloud.firestore.SetOptions;
 import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import database.FireStoreInitializer;
+import global_storage.CurrentUser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +15,8 @@ import java.util.concurrent.ExecutionException;
 
 public class DBWriterAccessObject implements WriterDataAccessInterface {
 
-    private final Firestore db;
+    private final Firestore db = CurrentUser.db;
 
-    public DBWriterAccessObject() {
-        this.db = FireStoreInitializer.initializeFirestore(); // Initialize Firestore
-    }
 
     @Override
     public void addComment(String artistId, String username, double rating, String comment) {

@@ -88,7 +88,7 @@ public class Recording {
 
         public Recording build() {
             return new Recording(this);
-=======
+
     /**
      * Returns the song name.
      * @return the song name.

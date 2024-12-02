@@ -1,11 +1,26 @@
 package app;
 
-import view.*;
+import data_access.MusicBrainzEventRepository;
+import data_access.MusicBrainzArtistRepository;
+import data_access.DBUserAccessObject;
+
+import interface_adapter.event_search.EventSearchController;
+import interface_adapter.event_search.EventSearchPresenter;
+import interface_adapter.artist_search.ArtistSearchController;
+import interface_adapter.artist_search.ArtistSearchPresenter;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginPresenter;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupPresenter;
+
+import Use_case.event_search.EventSearchDataAccessInterface;
+import Use_case.event_search.EventSearchInputBoundary;
+import Use_case.event_search.EventSearchInteractor;
+import Use_case.event_search.EventSearchOutputBoundary;
 import Use_case.artist_search.ArtistSearchDataAccessInterface;
 import Use_case.artist_search.ArtistSearchInputBoundary;
 import Use_case.artist_search.ArtistSearchInteractor;
 import Use_case.artist_search.ArtistSearchOutputBoundary;
-import data_access.MusicBrainzArtistRepository;
 import Use_case.login.LoginDataAccessInterface;
 import Use_case.login.LoginInputBoundary;
 import Use_case.login.LoginInteractor;
@@ -14,17 +29,13 @@ import Use_case.signup.SignupDataAccessInterface;
 import Use_case.signup.SignupInputBoundary;
 import Use_case.signup.SignupInteractor;
 import Use_case.signup.SignupOutputBoundary;
-import data_access.DBUserAccessObject;
-import interface_adapter.artist_search.ArtistSearchController;
-import interface_adapter.artist_search.ArtistSearchPresenter;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupPresenter;
+
+import view.*;
 
 public class AppCoordinator {
-    // use singleton pattern to save view info.
+    // Singleton pattern to manage view coordination
     private static AppCoordinator instance;
+
     private AppCoordinator() {}
 
     public static AppCoordinator getInstance() {
@@ -33,6 +44,7 @@ public class AppCoordinator {
         }
         return instance;
     }
+
     public void createLoginView() {
         LoginView loginView = new LoginView();
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginView);
@@ -68,6 +80,18 @@ public class AppCoordinator {
         final ArtistSearchController artistSearchController = new ArtistSearchController(artistSearchInteractor);
 
         artistListingView.setArtistSearchController(artistSearchController);
+    }
+
+    public void createEventListingView() {
+        EventListingView eventListingView = new EventListingView();
+
+        final EventSearchOutputBoundary eventSearchOutputBoundary = new EventSearchPresenter(eventListingView);
+        final EventSearchDataAccessInterface eventSearchDataAccessInterface = new MusicBrainzEventRepository();
+        final EventSearchInputBoundary eventSearchInteractor = new EventSearchInteractor(
+                eventSearchDataAccessInterface, eventSearchOutputBoundary);
+        final EventSearchController eventSearchController = new EventSearchController(eventSearchInteractor);
+
+        eventListingView.setEventSearchController(eventSearchController);
     }
 
     public void createSearchSelectionView() {

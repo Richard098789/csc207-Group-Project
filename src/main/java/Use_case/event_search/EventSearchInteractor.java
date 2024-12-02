@@ -3,12 +3,12 @@ package Use_case.event_search;
 import data_transfer_object.Event;
 
 public class EventSearchInteractor implements EventSearchInputBoundary {
-    private final MusicBrainzEventRepository repository;
-    private final EventSearchOutputBoundary outputBoundary;
+    private final EventSearchDataAccessInterface repository;
+    private final EventSearchOutputBoundary presenter;
 
-    public EventSearchInteractor(MusicBrainzEventRepository repository, EventSearchOutputBoundary outputBoundary) {
+    public EventSearchInteractor(EventSearchDataAccessInterface repository, EventSearchOutputBoundary outputBoundary) {
         this.repository = repository;
-        this.outputBoundary = outputBoundary;
+        this.presenter = outputBoundary;
     }
 
     @Override
@@ -21,6 +21,6 @@ public class EventSearchInteractor implements EventSearchInputBoundary {
         );
 
         EventSearchOutputData outputData = new EventSearchOutputData(events);
-        outputBoundary.presentResults(outputData);
+        presenter.presentResults(outputData);
     }
 }

@@ -13,11 +13,11 @@ public class ReadOutputData {
         this.averageRating = averageRating;
     }
 
-    List<Map<String, String>> getComments() {
+    public List<Map<String, String>> getComments() {
         return comments;
     }
 
-    double getAverageRating() {
+    public double getAverageRating() {
         return averageRating;
     }
 }

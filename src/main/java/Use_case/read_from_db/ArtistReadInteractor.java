@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReadInteractor implements ReadInputBoundary {
+public class ArtistReadInteractor implements ReadInputBoundary {
 
     private ReadOutputBoundary readPresenter;
     private ReadDataAccessInterface readDataAccessObject;
     // private globalStorage
 
-    public ReadInteractor(ReadOutputBoundary readPresenter, ReadDataAccessInterface readDataAccessObject) {
+    public ArtistReadInteractor(ReadOutputBoundary readPresenter, ReadDataAccessInterface readDataAccessObject) {
         this.readPresenter = readPresenter;
         this.readDataAccessObject = readDataAccessObject;
     }
@@ -38,7 +38,7 @@ public class ReadInteractor implements ReadInputBoundary {
         double averageRating = content.getAverageRating();
 
         final ReadOutputData readOutputData = new ReadOutputData(comments, averageRating);
-        readPresenter.prepareDetailedView(readOutputData);
+        readPresenter.prepareArtistDetailedView(readOutputData);
 
     }
 }

@@ -2,6 +2,9 @@ package Use_case.event_search;
 
 import data_transfer_object.Event;
 
+/**
+ * Event Search interactor.
+ */
 public class EventSearchInteractor implements EventSearchInputBoundary {
     private final MusicBrainzEventRepository repository;
     private final EventSearchOutputBoundary outputBoundary;
@@ -13,14 +16,14 @@ public class EventSearchInteractor implements EventSearchInputBoundary {
 
     @Override
     public void execute(EventSearchInputData inputData) {
-        Event[] events = repository.getEvents(
+        final Event[] events = repository.getEvents(
                 inputData.getEventName(),
                 inputData.getLocation(),
                 inputData.getLimit(),
                 inputData.getOffset()
         );
 
-        EventSearchOutputData outputData = new EventSearchOutputData(events);
+        final EventSearchOutputData outputData = new EventSearchOutputData(events);
         outputBoundary.presentResults(outputData);
     }
 }

@@ -1,6 +1,5 @@
 package entity.content;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,8 +50,8 @@ public class Content implements ContentInterface {
 
     @Override
     public List<Map<String, String>> getComments() {
-        List<Map<String, String>> comments = new ArrayList<>();
-        Map<String, String> comment = new HashMap<>();
+        final List<Map<String, String>> comments = new ArrayList<>();
+        final Map<String, String> comment = new HashMap<>();
         for (String key : contentInfo.keySet()) {
 
             if (contentInfo.get(key).get("comment") != null) {
@@ -78,8 +77,9 @@ public class Content implements ContentInterface {
             }
 
             // Calculating average rating
-            double average = rating / contentInfo.size();
-            return Math.round(average * 10) / 10.0; // Rounded to one decimal place.
+            final double average = rating / contentInfo.size();
+            // Rounded to one decimal place.
+            return Math.round(average * 10) / 10.0;
         }
         return rating;
 

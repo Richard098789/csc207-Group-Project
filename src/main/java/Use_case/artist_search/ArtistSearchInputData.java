@@ -1,5 +1,8 @@
 package Use_case.artist_search;
 
+/**
+ * Artist search input data.
+ */
 public class ArtistSearchInputData {
     private final String artistName;
     private final String country;

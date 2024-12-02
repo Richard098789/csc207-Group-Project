@@ -1,5 +1,9 @@
 package data_access;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
 import Use_case.login.LoginDataAccessInterface;
 import Use_case.signup.SignupDataAccessInterface;
 import com.google.api.core.ApiFuture;
@@ -10,25 +14,26 @@ import com.google.cloud.firestore.WriteResult;
 import entity.User;
 import global_storage.CurrentUser;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
+/**
+ * The data access object of user information.
+ */
 public class DBUserAccessObject implements LoginDataAccessInterface,
         SignupDataAccessInterface {
     private final Map<String, User> allUsers = new HashMap<>();
 
     public DBUserAccessObject() {
         try {
-            ApiFuture<QuerySnapshot> data = CurrentUser.db.collection("Users").get();
+            final ApiFuture<QuerySnapshot> data = CurrentUser.db.collection("Users").get();
             for (QueryDocumentSnapshot document : data.get().getDocuments()) {
-                String password = document.getString("password");
-                String username = document.getString("username");
-                User user = new User(username, password);
+                final String password = document.getString("password");
+                final String username = document.getString("username");
+                final User user = new User(username, password);
                 allUsers.put(username, user);
             }
-        } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error loading userInfo: " + e.getMessage());
+        }
+
+        catch (InterruptedException | ExecutionException ex) {
+            System.err.println("Error loading userInfo: " + ex.getMessage());
         }
     }
 
@@ -42,24 +47,32 @@ public class DBUserAccessObject implements LoginDataAccessInterface,
     public boolean addUser(String username, String password) {
         try {
             if (allUsers.containsKey(username)) {
-                return false; // Username already exists
+                // Username already exists
+                return false;
             }
-            User newUser = new User(username, password);
-            allUsers.put(username, newUser); //Update to local usermanager
+            final User newUser = new User(username, password);
 
-            Map<String, String> data = newUser.getSignInInfo();
-            WriteResult result = CurrentUser.db.collection("Users").document(username).set(data, SetOptions.merge()).get(); // SetOption to merge so that it would not override previous data.
+            // Update to local usermanager
+            allUsers.put(username, newUser);
+
+            final Map<String, String> data = newUser.getSignInInfo();
+
+            // SetOption to merge so that it would not override previous data.
+            final WriteResult result = CurrentUser.db.collection("Users")
+                    .document(username).set(data, SetOptions.merge()).get();
             return true;
 
-        } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error writing document: " + e.getMessage());
+        }
+
+        catch (InterruptedException | ExecutionException ex) {
+            System.err.println("Error writing document: " + ex.getMessage());
             return false;
         }
     }
 
     @Override
     public boolean validateLogin(String username, String password) {
-        User user = allUsers.get(username);
+        final User user = allUsers.get(username);
         return user != null && user.getPassword().equals(password);
     }
 }

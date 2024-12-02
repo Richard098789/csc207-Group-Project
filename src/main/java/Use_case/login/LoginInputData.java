@@ -1,5 +1,8 @@
 package Use_case.login;
 
+/**
+ * Login input data.
+ */
 public class LoginInputData {
     private final String username;
     private final String password;
@@ -8,7 +11,20 @@ public class LoginInputData {
         this.username = username;
         this.password = password;
     }
-    String getUsername() {return username;}
 
-    String getPassword() {return password;}
+    /**
+     * Get username.
+     * @return username
+     */
+    String getUsername() {
+        return username;
+    }
+
+    /**
+     * Get password.
+     * @return password
+     */
+    String getPassword() {
+        return password;
+    }
 }

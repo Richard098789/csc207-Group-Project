@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * This class represents a user of the program.
  * It contains information such as the user ID, username, password, and a list of comment IDs.
@@ -70,7 +69,6 @@ public class User {
     }
 
     /**
-
      * Returns the list of comment IDs.
      * @return the list of comment IDs.
      */
@@ -80,23 +78,28 @@ public class User {
 
     /**
      * Adds a comment ID to the list of comment IDs.
-     * @param commentId the comment ID that the user wanted to add.
+     * @param commentID the comment ID that the user wanted to add.
      */
-    public void addComment(String commentId) {
-        this.commentId.add(commentId);
+    public void addComment(String commentID) {
+        this.commentId.add(commentID);
     }
 
     /**
      * Remove a comment ID from  the list of comment IDs.
-     * @param commentId the comment ID that the user wanted to remove.
+     * @param commentID the comment ID that the user wanted to remove.
      */
-    public void removeComment(String commentId) {
-        this.commentId.remove(commentId);
+    public void removeComment(String commentID) {
+        this.commentId.remove(commentID);
 
     }
 
+    /**
+     * Get the sign in information.
+     * @return the map containing sign in info.
+     */
     public Map<String, String> getSignInInfo() {
-        Map<String, String> result = new HashMap<>();
+
+        final Map<String, String> result = new HashMap<>();
         result.put("username", username);
         result.put("password", password);
         return result;

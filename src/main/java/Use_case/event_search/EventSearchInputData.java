@@ -1,5 +1,8 @@
 package Use_case.event_search;
 
+/**
+ * Event Search Output data.
+ */
 public class EventSearchInputData {
     private final String eventName;
     private final String location;

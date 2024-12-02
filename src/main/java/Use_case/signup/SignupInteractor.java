@@ -1,6 +1,9 @@
 package Use_case.signup;
 
-public class SignupInteractor implements SignupInputBoundary{
+/**
+ * Signup interactor.
+ */
+public class SignupInteractor implements SignupInputBoundary {
 
     private final SignupDataAccessInterface userDataAccessObject;
     private final SignupOutputBoundary userPresenter;
@@ -12,10 +15,10 @@ public class SignupInteractor implements SignupInputBoundary{
     }
 
     @Override
-    public void execute(SignupInputData signupInputData){
-        String username = signupInputData.getUsername();
-        String password = signupInputData.getPassword();
-        String confirmPassword = signupInputData.getRepeatPassword();
+    public void execute(SignupInputData signupInputData) {
+        final String username = signupInputData.getUsername();
+        final String password = signupInputData.getPassword();
+        final String confirmPassword = signupInputData.getRepeatPassword();
 
         if (userDataAccessObject.userExists(username)) {
             userPresenter.prepareFailView();

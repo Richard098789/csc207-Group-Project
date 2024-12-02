@@ -1,5 +1,8 @@
 package Use_case.signup;
 
+/**
+ * Signup output boundary.
+ */
 public interface SignupOutputBoundary {
 
     /**
@@ -12,6 +15,9 @@ public interface SignupOutputBoundary {
      */
     void prepareFailView();
 
+    /**
+     * Prepare Unmatch Password View.
+     */
     void prepareUnmatchPasswordView();
 
     /**

@@ -39,7 +39,7 @@ The project addresses the need for:
 - An **interactive community-driven system** where users can provide and access real-time feedback about artists.
 - **Streamlined event exploration**, making it easy for users to connect with music-related events in their area.
 
-### Usefulness for Users
+### Accessibility Report
 This application is beneficial for:
 - **Music enthusiasts** seeking detailed artist insights and community opinions.
 - **Casual users** looking for a quick way to explore popular artists and events.
